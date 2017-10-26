@@ -14,7 +14,7 @@ public class ShadedTriangle{
     public static void main(String[] args){
 		SimpleCanvas myCanvas = new SimpleCanvas();
 		JFrame myFrame = new JFrame();
-		myFrame.setTitle("Pythagorean Triangle");
+		myFrame.setTitle("Shaded Triangle");
 		myFrame.setSize(500,500);
 
 		//Sets the window to close when upper right corner clicked.
