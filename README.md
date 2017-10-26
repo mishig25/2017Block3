@@ -8,6 +8,6 @@ Introduction to the algorithms and theory necessary for producing graphic images
 #### Language:
 * Java and Java 2D Graphics
 #### Content:
-1. Pythagorean Triangle
-2. Color Test
-3. Gradient Triangles
+1. [Pythagorean Triangle](https://github.com/mishig25/2017Block3/tree/master/1-Pythagorus)
+2. [Color Test](https://github.com/mishig25/2017Block3/tree/master/2-ColorTest)
+3. [Gradient Triangles](https://github.com/mishig25/2017Block3/tree/master/3-ShadedTriangles)
