@@ -8,7 +8,6 @@ class Panel extends JPanel implements ChangeListener{
  // 	ColorPanel cPanel;
 	JSlider lambdaSlider, rowcolSlider;
   JToggleButton toggle;
-	JToggleButton rowcol;
 	JLabel rlabel3;
 	HashMap state;
 	Canvas myCanvas;
@@ -55,18 +54,8 @@ class Panel extends JPanel implements ChangeListener{
     });
 		r.add(toggle);
 
-		rlabel3 = new JLabel("Choose row or col:");
+		rlabel3 = new JLabel("Choose row or col N:");
 		r.add(rlabel3);
-		rowcol = new JToggleButton("ROW");
-		rowcol.addChangeListener(new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent event) {
-					String newVal = rowcol.isSelected() ? "COL" : "ROW";
-					state.put("rowcol",newVal);
-					updateStateGUI();
-        }
-    });
-		r.add(rowcol);
 
 		rowcolSlider = new JSlider(JSlider.HORIZONTAL,1,31,1);
 		rowcolSlider.setMajorTickSpacing(5);
@@ -100,14 +89,13 @@ class Panel extends JPanel implements ChangeListener{
 		if(arr[0] == 'S'){
 			rlabel3.setVisible(false);
 			rowcolSlider.setVisible(false);
-			rowcol.setVisible(false);
+			state.put("rowcolVal",1);
+			rowcolSlider.setValue(1);
 		}else{
 			rlabel3.setVisible(true);
 			rowcolSlider.setVisible(true);
-			rowcol.setVisible(true);
 		}
 		toggle.setText(mode);
-		rowcol.setText((String)state.get("rowcol"));
 		myCanvas.update(state);
 	}
 

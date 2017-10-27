@@ -73,11 +73,7 @@ class Square{
 
 public class Canvas extends JPanel{
 
-  // shape variables
   Graphics2D g2d;
-  Rectangle2D.Double myRect;
-  Path2D.Double myTriganle;
-  Path2D.Double myTriganle2;
   HashMap state;
 
 
@@ -85,11 +81,6 @@ public class Canvas extends JPanel{
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(400,400));
 		setBackground(Color.lightGray);
-
-    // initialize shapes
-    myRect = new Rectangle2D.Double();
-    myTriganle = new Path2D.Double();
-    myTriganle2 = new Path2D.Double();
   }
 
   public void paintComponent(Graphics g){
@@ -102,16 +93,19 @@ public class Canvas extends JPanel{
 
     // outer square
     if(state!=null){
-      int n_col = 10;
+      int n_col = (int)state.get("rowcolVal");
       int size = w/n_col;
+      boolean reverse = true;
       for(int i=0; i<n_col; ++i){
         for(int j=0; j<n_col; ++j){
           int x = i*size;
           int y = j*size;
           float[] pts = {x,y,x+size,y,x+size,y+size,x,y+size};
           Square new_sqr = new Square(pts,g2d,Color.red);
-          new_sqr.spiral(100,(float)state.get("lambda"),false,Color.yellow);
+          new_sqr.spiral(100,(float)state.get("lambda"),reverse,Color.yellow);
+          reverse = !reverse;
         }
+        if(n_col%2==0) reverse = !reverse;
       }
     }
 	}

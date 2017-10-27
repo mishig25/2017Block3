@@ -28,7 +28,6 @@ public class Spiral{
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Must use getContentPane() with JFrame.
-		myFrame.add(myCanvas);
 		myFrame.pack(); //resizes to preferred size for components.
 		myFrame.setResizable(false);
 		myFrame.setVisible(true);
