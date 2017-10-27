@@ -3,7 +3,8 @@
  * Pythagor.java.
  */
 
-import javax.swing.*;
+ import java.awt.*;
+ import javax.swing.*;
 
 public class Spiral{
 
@@ -12,10 +13,16 @@ public class Spiral{
     //and then stops.
 
     public static void main(String[] args){
+
 		SimpleCanvas myCanvas = new SimpleCanvas();
 		JFrame myFrame = new JFrame();
+    Panel sliders = new Panel();
+    Container cp = myFrame.getContentPane();
+
 		myFrame.setTitle("Spiral");
 		myFrame.setSize(500,500);
+    cp.add(myCanvas, BorderLayout.CENTER);
+    cp.add(sliders,BorderLayout.EAST);
 
 		//Sets the window to close when upper right corner clicked.
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,7 +30,7 @@ public class Spiral{
 		//Must use getContentPane() with JFrame.
 		myFrame.add(myCanvas);
 		myFrame.pack(); //resizes to preferred size for components.
-		myFrame.setResizable(true);
+		myFrame.setResizable(false);
 		myFrame.setVisible(true);
 
   }
