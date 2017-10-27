@@ -5,7 +5,7 @@ Creates a spiraling squares pattern.
 
 Demo:
 
-![Alt Text](http://g.recordit.co/pBPmiM9L7Z.gif)
+![Alt Text](http://g.recordit.co/NhTQ26pokc.gif)
 
 To run:
 ```
