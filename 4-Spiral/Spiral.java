@@ -1,6 +1,5 @@
-
 /**
- * Pythagor.java.
+ * Spiral.java.
  */
 
  import java.awt.*;
@@ -8,12 +7,11 @@
 
 public class Spiral{
 
-    //For this type of program, event handling determines the path of
-    //execution.  This main method "looks" like it sets up the frame
-    //and then stops.
+    // main method of spiral program
 
     public static void main(String[] args){
 
+    // create canvas and GUI controls
 		Canvas myCanvas = new Canvas();
 		JFrame myFrame = new JFrame();
     Panel sliders = new Panel(myCanvas);
@@ -21,6 +19,7 @@ public class Spiral{
 
 		myFrame.setTitle("Spiral");
 		myFrame.setSize(500,500);
+    // attach canvas and GUI controls to the window
     cp.add(myCanvas, BorderLayout.CENTER);
     cp.add(sliders,BorderLayout.EAST);
 
@@ -31,6 +30,6 @@ public class Spiral{
 		myFrame.pack(); //resizes to preferred size for components.
 		myFrame.setResizable(false);
 		myFrame.setVisible(true);
+  }// end main
 
-  }
-} // BasicDraw
+} // Spiral
