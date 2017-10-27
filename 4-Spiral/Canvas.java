@@ -1,6 +1,6 @@
 
 /**
- * SimpleCanvas.java
+ * Canvas.java
  *
  * Draws Three Rectangles to Form Pythagorean Triangle.
  *
@@ -17,8 +17,10 @@ class Square{
   float[] pts;
   Path2D.Double sqr;
   Graphics2D g2d;
+  Color color1 = Color.yellow;
+  Color color2 = Color.red;
 
-  public Square(float[] _pts, Graphics2D _g2d){
+  public Square(float[] _pts, Graphics2D _g2d, Color color){
     pts = _pts;
     g2d = _g2d;
     sqr = new Path2D.Double();
@@ -28,6 +30,8 @@ class Square{
       else sqr.lineTo(pts[ind+=1],pts[ind+=1]);
     }
     sqr.closePath();
+    g2d.setColor(color);
+    g2d.fill(sqr);
   }
   public void draw(Color color){
     g2d.setColor(color);
@@ -53,18 +57,17 @@ class Square{
     }
     return pts_new;
   }
-  public Square smaller_square(float lambda, boolean reverse){
+  public Square smaller_square(float lambda, boolean reverse, Color color){
     float[] newPts = new_pts(lambda,reverse);
-    Square new_sqr = new Square(newPts,g2d);
+    Square new_sqr = new Square(newPts,g2d,color);
     return new_sqr;
   }
-  public void spiral(int count, float lambda, boolean reverse, Color color1){
+  public void spiral(int count, float lambda, boolean reverse, Color color){
     if(count == 0) return;
-    Square new_sqr2 = this.smaller_square((float)0.1, reverse);
-    new_sqr2.draw(color1);
-    color1 = (color1 == Color.yellow) ? Color.red : Color.yellow;
+    Square new_sqr2 = this.smaller_square(lambda, reverse, color);
+    color = (color == color1) ? color2 : color1;
     count -= 1;
-    new_sqr2.spiral(count,lambda,reverse,color1);
+    new_sqr2.spiral(count,lambda,reverse,color);
   }
 }
 
@@ -80,7 +83,7 @@ public class Canvas extends JPanel{
 
   public Canvas (){
 		//The following is another way to guarantee correct size.
-		setPreferredSize(new Dimension(300,300));
+		setPreferredSize(new Dimension(400,400));
 		setBackground(Color.lightGray);
 
     // initialize shapes
@@ -98,28 +101,15 @@ public class Canvas extends JPanel{
     int h = getHeight();
 
     // outer square
-    float[] pts = {0,0,200,0,200,200,0,200};
-    Square new_sqr = new Square(pts,g2d);
-    new_sqr.draw(Color.red);
-    new_sqr.spiral(10,(float)0.4,false,Color.yellow);
+    float[] pts = {0,0,400,0,400,400,0,400};
+    Square new_sqr = new Square(pts,g2d,Color.red);
+    if(state!=null)new_sqr.spiral(100,(float)state.get("lambda"),false,Color.yellow);
+    
 	}
-
-  public void paintShapeWithGradient(Graphics2D g2d, Shape shp, Color color1, Color color2){
-    // get bounding box values
-    Rectangle2D bbox = shp.getBounds2D();
-    float x = (float)bbox.getX();
-    float y = (float)bbox.getY();
-    float w = (float)bbox.getWidth();
-    float h = (float)bbox.getHeight();
-    // create gradient and paint the shape
-    GradientPaint rectGRad = new GradientPaint(0,y,color1,0,y+h,color2);
-    g2d.setPaint(rectGRad);
-    g2d.fill(shp);
-  }
 
   public void update(HashMap _state){
     state = _state;
-
+    repaint();
   }
 
 }// Canvas

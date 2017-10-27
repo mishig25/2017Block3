@@ -26,7 +26,7 @@ class Panel extends JPanel implements ChangeListener{
 		state.put("rowcolVal",1);
 
 
-    lambdaSlider = new JSlider(JSlider.HORIZONTAL,10,90,10);
+    lambdaSlider = new JSlider(JSlider.HORIZONTAL,5,95,5);
 		lambdaSlider.setMajorTickSpacing(10);
 		lambdaSlider.setMinorTickSpacing(5);
 		lambdaSlider.setPaintTicks(true);
