@@ -20,7 +20,7 @@ class Panel extends JPanel implements ChangeListener{
 		setLayout(new GridLayout(1,3,30,10));
 
 		state = new HashMap();
-		state.put("lambda",(float)0.1);
+		state.put("lambda",(float)0.05);
 		state.put("mode","SINGLE");
 		state.put("rowcol","ROW");
 		state.put("rowcolVal",1);

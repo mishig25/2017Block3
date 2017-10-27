@@ -101,10 +101,19 @@ public class Canvas extends JPanel{
     int h = getHeight();
 
     // outer square
-    float[] pts = {0,0,400,0,400,400,0,400};
-    Square new_sqr = new Square(pts,g2d,Color.red);
-    if(state!=null)new_sqr.spiral(100,(float)state.get("lambda"),false,Color.yellow);
-    
+    if(state!=null){
+      int n_col = 10;
+      int size = w/n_col;
+      for(int i=0; i<n_col; ++i){
+        for(int j=0; j<n_col; ++j){
+          int x = i*size;
+          int y = j*size;
+          float[] pts = {x,y,x+size,y,x+size,y+size,x,y+size};
+          Square new_sqr = new Square(pts,g2d,Color.red);
+          new_sqr.spiral(100,(float)state.get("lambda"),false,Color.yellow);
+        }
+      }
+    }
 	}
 
   public void update(HashMap _state){
