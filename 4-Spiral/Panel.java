@@ -8,7 +8,7 @@ class Panel extends JPanel implements ChangeListener{
  // 	ColorPanel cPanel;
 	JSlider lambdaSlider, rowcolSlider;
   JToggleButton toggle;
-	JLabel rlabel3;
+	JLabel rlabel1,rlabel2,rlabel3;
 	HashMap state;
 	Canvas myCanvas;
 
@@ -28,21 +28,20 @@ class Panel extends JPanel implements ChangeListener{
     lambdaSlider = new JSlider(JSlider.HORIZONTAL,5,95,5);
 		lambdaSlider.setMajorTickSpacing(10);
 		lambdaSlider.setMinorTickSpacing(5);
-		lambdaSlider.setPaintTicks(true);
-		lambdaSlider.setPaintLabels(true);
-		lambdaSlider.addChangeListener(this);
+
 		Hashtable lambdaValStrings = new Hashtable();
 		int label_val = 0;
-		while (label_val < 91)lambdaValStrings.put( new Integer( label_val+=10 ), new JLabel(String.format("%.1f",(float)label_val/100)));
+		while (label_val < 91)lambdaValStrings.put( new Integer( label_val+=10 ),
+			new JLabel(String.format("%.1f",(float)label_val/100)));
 		lambdaSlider.setLabelTable( lambdaValStrings );
 
-		JLabel rlabel = new JLabel("Choose Lambda:");
+		rlabel1 = new JLabel("Choose Lambda:");
+		rlabel2 = new JLabel("Choose mode:");
+		rlabel3 = new JLabel("Choose row or col N:");
+
 		JPanel r = new JPanel();
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
-		r.add(rlabel);
-    r.add(lambdaSlider);
-		JLabel rlabel2 = new JLabel("Choose mode:");
-		r.add(rlabel2);
+
 		toggle = new JToggleButton("SINGLE");
 		toggle.addChangeListener(new ChangeListener() {
         @Override
@@ -52,22 +51,19 @@ class Panel extends JPanel implements ChangeListener{
 					updateStateGUI();
         }
     });
-		r.add(toggle);
-
-		rlabel3 = new JLabel("Choose row or col N:");
-		r.add(rlabel3);
 
 		rowcolSlider = new JSlider(JSlider.HORIZONTAL,1,31,1);
 		rowcolSlider.setMajorTickSpacing(5);
 		rowcolSlider.setMinorTickSpacing(1);
-		rowcolSlider.setPaintTicks(true);
-		rowcolSlider.setPaintLabels(true);
-		rowcolSlider.addChangeListener(this);
-		r.add(rowcolSlider);
+		for (JSlider slider: new JSlider[] {lambdaSlider,rowcolSlider}){
+			slider.setPaintTicks(true);
+			slider.setPaintLabels(true);
+			slider.addChangeListener(this);
+		}
 
-
+		for(JComponent component: new JComponent[]{rlabel1,lambdaSlider,rlabel2,
+			toggle,rlabel3,rowcolSlider})r.add(component);
 		add(r);
-
 		updateStateGUI();
 
   }//end contructor
@@ -98,5 +94,4 @@ class Panel extends JPanel implements ChangeListener{
 		toggle.setText(mode);
 		myCanvas.update(state);
 	}
-
 }
