@@ -14,9 +14,9 @@ public class Spiral{
 
     public static void main(String[] args){
 
-		SimpleCanvas myCanvas = new SimpleCanvas();
+		Canvas myCanvas = new Canvas();
 		JFrame myFrame = new JFrame();
-    Panel sliders = new Panel();
+    Panel sliders = new Panel(myCanvas);
     Container cp = myFrame.getContentPane();
 
 		myFrame.setTitle("Spiral");

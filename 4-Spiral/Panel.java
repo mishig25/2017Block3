@@ -11,10 +11,11 @@ class Panel extends JPanel implements ChangeListener{
 	JToggleButton rowcol;
 	JLabel rlabel3;
 	HashMap state;
+	Canvas myCanvas;
 
- 	public Panel(){
+ 	public Panel(Canvas _myCanvas){
 
-		// cPanel=cp;
+		myCanvas = _myCanvas;
 
 		setLayout(new GridLayout(1,3,30,10));
 
@@ -89,6 +90,7 @@ class Panel extends JPanel implements ChangeListener{
 		int rowcolVal = rowcolSlider.getValue();
 		state.put("lambda",lambdaVal);
 		state.put("rowcolVal",rowcolVal);
+		updateStateGUI();
 	}//end stateChanged
 
 	public void updateStateGUI(){
@@ -106,6 +108,7 @@ class Panel extends JPanel implements ChangeListener{
 		}
 		toggle.setText(mode);
 		rowcol.setText((String)state.get("rowcol"));
+		myCanvas.update(state);
 	}
 
 }

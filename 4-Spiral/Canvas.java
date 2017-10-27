@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.*;
 
 class Square{
 
@@ -67,16 +68,17 @@ class Square{
   }
 }
 
-public class SimpleCanvas extends JPanel{
+public class Canvas extends JPanel{
 
   // shape variables
   Graphics2D g2d;
   Rectangle2D.Double myRect;
   Path2D.Double myTriganle;
   Path2D.Double myTriganle2;
+  HashMap state;
 
 
-  public SimpleCanvas (){
+  public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.lightGray);
@@ -115,6 +117,9 @@ public class SimpleCanvas extends JPanel{
     g2d.fill(shp);
   }
 
-}// SimpleCanvas
+  public void update(HashMap _state){
+    state = _state;
 
-// System.out.println(x1+" "+y1+" "+x2+" "+y2);
+  }
+
+}// Canvas
