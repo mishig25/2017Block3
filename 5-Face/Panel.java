@@ -33,10 +33,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 
 		// initial state
 		state = new HashMap();
-		state.put("lambda",(float)0.05);
-		state.put("mode","SINGLE");
-		state.put("rowcol","ROW");
-		state.put("rowcolVal",1);
+		state.put("chosenElement","Face");
 
 		// add new buttons here
 		createBtn = new JButton("Create");
@@ -46,24 +43,26 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		up = new JButton("Up");
 		down = new JButton("Down");
 
-		rotateLeft = new JButton("Left");
-		rotateRight = new JButton("Right");
-		scaleUp = new JButton("Up");
-		scaleDown = new JButton("Down");
+		rotateLeft = new JButton("Rot Left");
+		rotateRight = new JButton("Rot Right");
+		scaleUp = new JButton("Scale Up");
+		scaleDown = new JButton("Scale Down");
 
-		up.addActionListener(this);
+		JButton[] btns = {left,right,up,down,rotateLeft,rotateRight,scaleUp,scaleDown,createBtn};
+		for(JButton btn: btns) btn.addActionListener(this);
 
 		// create JPanel and add all the components to it
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(9,3,1,1));
 
-		JComboBox chooseElement = new JComboBox(new String[] {"haha","hoho"});
+		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow","Ear","Nose","Mouth"});
 		chooseElement.addActionListener (new ActionListener () {
-    public void actionPerformed(ActionEvent e) {
-			String chosenElement = (String)chooseElement.getSelectedItem();
-        System.out.println(chosenElement);
-    }
-});
+		    public void actionPerformed(ActionEvent e) {
+					String chosenElement = (String)chooseElement.getSelectedItem();
+					state.put("chosenElement",chosenElement);
+					myCanvas.update(state);
+		    }
+		});
 
 		panel.add(new JLabel("Choose:",SwingConstants.CENTER));
 		panel.add(chooseElement);
@@ -103,6 +102,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 
 		add(panel);
 
+		myCanvas.update(state);
   }//end contructor
 
 	// listen for changes in values of sliders
@@ -137,12 +137,13 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		//
 		// // call canvas to re-create squares based on
 		// // changes in "state"
-		// myCanvas.update(state);
+		//
 	}//end updateStateGUI
 
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource();
-		System.out.println(btn.getText());
+		myCanvas.btnClicked(btn.getText());
+		// System.out.println(btn.getText());
 	}
 
 }// Panel
