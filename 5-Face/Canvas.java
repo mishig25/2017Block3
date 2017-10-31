@@ -19,9 +19,47 @@ class FaceElement{
     fillColor = _fillColor;
     outlineColor = _outlineColor;
   }
-  // public applyTransform(){
-  //
-  // }
+  public void applyTransform(String type){
+    AffineTransform t = new AffineTransform();
+    System.out.println(type);
+    switch(type){
+      case "Left": t.translate(-5,0); break;
+      case "Right": t.translate(5,0); break;
+      case "Up": t.translate(0,-5); break;
+      case "Down": t.translate(0,5); break;
+      case "Rot Left": rotate(t,-10); break;
+      case "Rot Right": rotate(t,10); break;
+      case "Scale Up": scale(t,1.25,1.25); break;
+      case "Scale Down": scale(t,.75,.75); break;
+    }
+    shape = t.createTransformedShape(shape);
+  }
+  private void scale(AffineTransform t, Double valX, Double valY){
+    float[] centerPoint = getCenterPoint();
+    float x = centerPoint[0], y = centerPoint[1];
+
+    t.translate(x, y);
+    t.scale(valX,valY);
+    t.translate(-x, -y);
+  }
+  private void rotate(AffineTransform t, int degree){
+    float[] centerPoint = getCenterPoint();
+    float x = centerPoint[0], y = centerPoint[1];
+
+    t.translate(x, y);
+    t.rotate(Math.toRadians(degree));
+    t.translate(-x, -y);
+  }
+  private float[] getCenterPoint(){
+    Rectangle2D bbox = shape.getBounds2D();
+    float x = (float)bbox.getX();
+    float y = (float)bbox.getY();
+    float w = (float)bbox.getWidth();
+    float h = (float)bbox.getHeight();
+    x += w/2;
+    y += h/2;
+    return new float[]{x,y};
+  }
 }
 
 public class Canvas extends JPanel{
@@ -160,23 +198,8 @@ public class Canvas extends JPanel{
   public void transformShape(String type){
     // System.out.println(type);
     if(shapes.size()>0){
-      FaceElement lastElement = shapes.remove(shapes.size() - 1);
-      AffineTransform t = new AffineTransform();
-
-      // apply transform
-      switch(type){
-        case "Left": t.translate(-5,0); break;
-        case "Right": t.translate(5,0); break;
-        case "Up": t.translate(0,-5); break;
-        case "Down": t.translate(0,5); break;
-        case "Rot Left": drawEar(); break;
-        case "Rot Right": drawNose(); break;
-        case "Scale Up": drawMouth(); break;
-        case "Scale Down": drawMouth(); break;
-      }
-      Shape shape = lastElement.shape;
-      Shape transformedShape = t.createTransformedShape(shape);
-      shapes.add(new FaceElement(transformedShape,paleColor,null));
+      FaceElement lastElement = shapes.get(shapes.size() - 1);
+      lastElement.applyTransform(type);
     }
   }
 

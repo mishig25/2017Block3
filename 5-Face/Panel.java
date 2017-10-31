@@ -93,12 +93,12 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		panel.add(rotateRight);
 
 		panel.add(new JPanel());
-		panel.add(new JLabel("Scalde",SwingConstants.CENTER));
+		panel.add(new JLabel("Scale",SwingConstants.CENTER));
 		panel.add(new JPanel());
 
-		panel.add(scaleUp);
-		panel.add(new JPanel());
 		panel.add(scaleDown);
+		panel.add(new JPanel());
+		panel.add(scaleUp);
 
 		add(panel);
 
