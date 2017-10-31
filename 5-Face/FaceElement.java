@@ -29,6 +29,7 @@ public class FaceElement{
       case "Rot Right": rotate(t,10); break;
       case "Scale Up": scale(t,1.25,1.25); break;
       case "Scale Down": scale(t,.75,.75); break;
+      case "leftEar": rotate(t,-180); break;
     }
     shape = t.createTransformedShape(shape);
   }

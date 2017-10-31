@@ -54,7 +54,7 @@ class Panel extends JPanel implements ActionListener{
 
 		// create JComboBox for presenting a user with options
 		// on what kind of Face Element will be created
-		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow","Ear","Nose","Mouth"});
+		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow","Right Ear","Left Ear","Nose","Mouth"});
 		// add ActionListener to JComboBox
 		chooseElement.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
