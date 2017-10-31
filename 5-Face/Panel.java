@@ -54,7 +54,8 @@ class Panel extends JPanel implements ActionListener{
 
 		// create JComboBox for presenting a user with options
 		// on what kind of Face Element will be created
-		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow","Right Ear","Left Ear","Nose","Mouth"});
+		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow",
+			"Right Ear","Left Ear","Nose","Mouth"});
 		// add ActionListener to JComboBox
 		chooseElement.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
@@ -108,7 +109,7 @@ class Panel extends JPanel implements ActionListener{
 	// send updates to Canvas
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton)e.getSource(); // get which button was clicked
-		myCanvas.btnClicked(btn.getText()); // send to Canvas
+		myCanvas.btnClicked(btn.getText()); // send command to Canvas
 	}// end actionPerformed
 
 }// Panel
