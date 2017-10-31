@@ -10,58 +10,6 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 
-class FaceElement{
-  public Shape shape;
-  public Color fillColor;
-  public Color outlineColor;
-  public FaceElement(Shape _shape, Color _fillColor, Color _outlineColor){
-    shape = _shape;
-    fillColor = _fillColor;
-    outlineColor = _outlineColor;
-  }
-  public void applyTransform(String type){
-    AffineTransform t = new AffineTransform();
-    System.out.println(type);
-    switch(type){
-      case "Left": t.translate(-5,0); break;
-      case "Right": t.translate(5,0); break;
-      case "Up": t.translate(0,-5); break;
-      case "Down": t.translate(0,5); break;
-      case "Rot Left": rotate(t,-10); break;
-      case "Rot Right": rotate(t,10); break;
-      case "Scale Up": scale(t,1.25,1.25); break;
-      case "Scale Down": scale(t,.75,.75); break;
-    }
-    shape = t.createTransformedShape(shape);
-  }
-  private void scale(AffineTransform t, Double valX, Double valY){
-    float[] centerPoint = getCenterPoint();
-    float x = centerPoint[0], y = centerPoint[1];
-
-    t.translate(x, y);
-    t.scale(valX,valY);
-    t.translate(-x, -y);
-  }
-  private void rotate(AffineTransform t, int degree){
-    float[] centerPoint = getCenterPoint();
-    float x = centerPoint[0], y = centerPoint[1];
-
-    t.translate(x, y);
-    t.rotate(Math.toRadians(degree));
-    t.translate(-x, -y);
-  }
-  private float[] getCenterPoint(){
-    Rectangle2D bbox = shape.getBounds2D();
-    float x = (float)bbox.getX();
-    float y = (float)bbox.getY();
-    float w = (float)bbox.getWidth();
-    float h = (float)bbox.getHeight();
-    x += w/2;
-    y += h/2;
-    return new float[]{x,y};
-  }
-}
-
 public class Canvas extends JPanel{
 
   // create vars
@@ -99,38 +47,34 @@ public class Canvas extends JPanel{
   }// end update
 
   // drawing shpaes
-  public void drawFace(){
+  private FaceElement drawFace(){
     Ellipse2D.Double face = new Ellipse2D.Double(50,50,100,100);
-    FaceElement faceElement = new FaceElement(face,paleColor,null);
-    shapes.add(faceElement);
+    return new FaceElement(face,paleColor,null);
   }
 
-  public void drawEye(){
+  private FaceElement drawEye(){
     Ellipse2D.Double eye = new Ellipse2D.Double(70,70,20,20);
     Color eyeColor = Color.white;
-    FaceElement eyeElement = new FaceElement(eye,eyeColor,null);
-    shapes.add(eyeElement);
+    return new FaceElement(eye,eyeColor,null);
   }
 
-  public void drawEyePupil(){
+  private FaceElement drawEyePupil(){
     Ellipse2D.Double eyePupil = new Ellipse2D.Double(74,74,7,7);
     Color eyePupilColor = Color.black;
-    FaceElement eyePupilElement = new FaceElement(eyePupil,eyePupilColor,null);
-    shapes.add(eyePupilElement);
+    return new FaceElement(eyePupil,eyePupilColor,null);
   }
 
-  public void drawEyeBrow(){
+  private FaceElement drawEyeBrow(){
     Path2D.Double eyeBrow = new Path2D.Double();
     eyeBrow.moveTo(200,200);
     eyeBrow.lineTo(200,230);
     eyeBrow.quadTo(250,200,300,230);
     eyeBrow.lineTo(300,200);
     eyeBrow.quadTo(250,170,200,200);
-    FaceElement eyeBrowElement = new FaceElement(eyeBrow,Color.black,null);
-    shapes.add(eyeBrowElement);
+    return new FaceElement(eyeBrow,Color.black,null);
   }
 
-  public void drawEar(){
+  private FaceElement drawEar(){
     Path2D.Double ear = new Path2D.Double();
     ear.moveTo(50,50);
     ear.quadTo(70,30,100,50);
@@ -139,34 +83,25 @@ public class Canvas extends JPanel{
     ear.closePath();
     g2d.setColor(paleColor);
     g2d.fill(ear);
-    FaceElement earElement = new FaceElement(ear,paleColor,null);
-    shapes.add(earElement);
+    return new FaceElement(ear,paleColor,null);
   }
 
-  public void drawNose(){
+  private FaceElement drawNose(){
     Path2D.Double nose = new Path2D.Double();
     nose.moveTo(80,150);
     nose.quadTo(60,20,30,150);
     nose.closePath();
-    FaceElement noseElement = new FaceElement(nose,paleColor,null);
-    shapes.add(noseElement);
-    // AffineTransform t = new AffineTransform();
-    // t.scale(2,2);
-    // // t.rotate(Math.toRadians(50));
-    // nose.transform(t);
-    // // g2d.setColor(paleColor);
-    // // g2d.fill(nose);
+    return new FaceElement(nose,paleColor,null);
   }
 
-  public void drawMouth(){
+  private FaceElement drawMouth(){
     Path2D.Double mouth = new Path2D.Double();
     mouth.moveTo(50,50);
     mouth.lineTo(50,80);
     mouth.quadTo(95,100,150,80);
     mouth.lineTo(150,50);
     mouth.quadTo(95,70,50,50);
-    FaceElement mouthElement = new FaceElement(mouth,Color.white,Color.black);
-    shapes.add(mouthElement);
+    return new FaceElement(mouth,Color.white,Color.black);
   }
 
   public void btnClicked(String type){
@@ -184,19 +119,20 @@ public class Canvas extends JPanel{
   }
 
   public void createShape(String type){
+    FaceElement newElement = new FaceElement(null,null,null);
     switch(type){
-      case "Face": drawFace(); break;
-      case "Eye": drawEye(); break;
-      case "Eye Pupil": drawEyePupil(); break;
-      case "Eyebrow": drawEyeBrow(); break;
-      case "Ear": drawEar(); break;
-      case "Nose": drawNose(); break;
-      case "Mouth": drawMouth(); break;
+      case "Face": newElement = drawFace(); break;
+      case "Eye": newElement = drawEye(); break;
+      case "Eye Pupil": newElement = drawEyePupil(); break;
+      case "Eyebrow": newElement = drawEyeBrow(); break;
+      case "Ear": newElement = drawEar(); break;
+      case "Nose": newElement = drawNose(); break;
+      case "Mouth": newElement = drawMouth(); break;
     }
+    shapes.add(newElement);
   }
 
   public void transformShape(String type){
-    // System.out.println(type);
     if(shapes.size()>0){
       FaceElement lastElement = shapes.get(shapes.size() - 1);
       lastElement.applyTransform(type);

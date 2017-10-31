@@ -1,26 +1,26 @@
 /**
- * Spiral.java.
+ * FaceConstruction.java.
  */
 
  import java.awt.*;
  import javax.swing.*;
 
-public class Spiral{
+public class FaceConstruction{
 
-    // main method of spiral program
+    // main method of FaceConstruction program
 
     public static void main(String[] args){
 
-    // create canvas and GUI controls
+    // create window, canvas and GUI controls
+    JFrame myFrame = new JFrame();
 		Canvas myCanvas = new Canvas();
-		JFrame myFrame = new JFrame();
-    Panel sliders = new Panel(myCanvas);
+    Panel GUI = new Panel(myCanvas);
 
 		myFrame.setTitle("Face Construction");
 		myFrame.setSize(500,500);
     // attach canvas and GUI controls to the window
     myFrame.add(myCanvas, BorderLayout.CENTER);
-    myFrame.add(sliders,BorderLayout.EAST);
+    myFrame.add(GUI,BorderLayout.EAST);
 
 		//Sets the window to close when upper right corner clicked.
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,4 +31,4 @@ public class Spiral{
 		myFrame.setVisible(true);
   }// end main
 
-} // Spiral
+} // FaceConstruction

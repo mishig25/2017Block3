@@ -9,16 +9,15 @@ import javax.swing.event.*;
 import java.util.*;
 import java.awt.event.*;
 
-class Panel extends JPanel implements ChangeListener, ActionListener{
+class Panel extends JPanel implements ActionListener{
 
-	// sliders
+	// buttons
 	JButton left,right,up,down;
 	JButton rotateLeft,rotateRight;
 	JButton scaleUp,scaleDown;
 	JButton createBtn;
 
-	// state that will keep track of current state
-	// like how many squares should be on the screen
+	// state that will keep track of current state (which shape was the most recent)
 	HashMap state;
 
 	// current instance of canvas so that
@@ -28,34 +27,35 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
  	public Panel(Canvas _myCanvas){
 
 		myCanvas = _myCanvas;
-
 		setLayout(new GridLayout(1,3,30,10));
 
 		// initial state
 		state = new HashMap();
 		state.put("chosenElement","Face");
 
-		// add new buttons here
+		// initializing buttons
 		createBtn = new JButton("Create");
-
 		left = new JButton("Left");
 		right = new JButton("Right");
 		up = new JButton("Up");
 		down = new JButton("Down");
-
 		rotateLeft = new JButton("Rot Left");
 		rotateRight = new JButton("Rot Right");
 		scaleUp = new JButton("Scale Up");
 		scaleDown = new JButton("Scale Down");
 
+		// attaching ActionListener to all buttons
 		JButton[] btns = {left,right,up,down,rotateLeft,rotateRight,scaleUp,scaleDown,createBtn};
 		for(JButton btn: btns) btn.addActionListener(this);
 
-		// create JPanel and add all the components to it
+		// create new panel
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(9,3,1,1));
 
+		// create JComboBox for presenting a user with options
+		// on what kind of Face Element will be created
 		JComboBox chooseElement = new JComboBox(new String[] {"Face","Eye","Eye Pupil","Eyebrow","Ear","Nose","Mouth"});
+		// add ActionListener to JComboBox
 		chooseElement.addActionListener (new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
 					String chosenElement = (String)chooseElement.getSelectedItem();
@@ -64,6 +64,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		    }
 		});
 
+		// attaching buttons and labels to the newly created JPanel
 		panel.add(new JLabel("Choose:",SwingConstants.CENTER));
 		panel.add(chooseElement);
 		panel.add(createBtn);
@@ -101,49 +102,13 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		panel.add(scaleUp);
 
 		add(panel);
-
 		myCanvas.update(state);
   }//end contructor
 
-	// listen for changes in values of sliders
-  public void stateChanged(ChangeEvent ev){
-		System.out.println("here");
-    // // get lambda value
-		// float lambdaVal = (float)lambdaSlider.getValue();
-		// lambdaVal /= 100;
-		// // get number of row col value
-		// int rowcolVal = rowcolSlider.getValue();
-		// // update state
-		// state.put("lambda",lambdaVal);
-		// state.put("rowcolVal",rowcolVal);
-		// // render updates
-		// updateStateGUI();
-	}//end stateChanged
-
-	public void updateStateGUI(){
-		// render changes in "state"
-		// String mode = (String)state.get("mode");
-		// char[] arr = mode.toCharArray();
-		// if(arr[0] == 'S'){
-		// 	rlabel3.setVisible(false);
-		// 	rowcolSlider.setVisible(false);
-		// 	state.put("rowcolVal",1);
-		// 	rowcolSlider.setValue(1);
-		// }else{
-		// 	rlabel3.setVisible(true);
-		// 	rowcolSlider.setVisible(true);
-		// }
-		// toggle.setText(mode);
-		//
-		// // call canvas to re-create squares based on
-		// // changes in "state"
-		//
-	}//end updateStateGUI
-
+	// send updates to Canvas
 	public void actionPerformed(ActionEvent e) {
-		JButton btn = (JButton)e.getSource();
-		myCanvas.btnClicked(btn.getText());
-		// System.out.println(btn.getText());
-	}
+		JButton btn = (JButton)e.getSource(); // get which button was clicked
+		myCanvas.btnClicked(btn.getText()); // send to Canvas
+	}// end actionPerformed
 
 }// Panel
