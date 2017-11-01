@@ -11,24 +11,20 @@
 
 class Panel extends JPanel implements ChangeListener, ActionListener{
 
-	// sliders
+	// sliders and labels
 	JSlider scalingSlider, constantSlider;
 	JLabel rlabel1,rlabel2,rlabel3;
 
 	// current instance of canvas so that
 	// we can tell canvas to update on user input
-	SimpleCanvas myCanvas;
+	Canvas myCanvas;
 
- 	public Panel(SimpleCanvas _myCanvas){
+ 	public Panel(Canvas _myCanvas){
 
 		myCanvas = _myCanvas;
-
 		setLayout(new GridLayout(1,3,30,10));
 
-		// initial state
-		String[] functionNames = myCanvas.functionNames;
-
-		// initialize slider for changing Lambda value
+		// initialize slider for changing scale value
     scalingSlider = new JSlider(JSlider.HORIZONTAL,1,100,70);
 		scalingSlider.setMajorTickSpacing(10);
 		scalingSlider.setMinorTickSpacing(5);
@@ -38,7 +34,8 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		rlabel2 = new JLabel("Choose scaling factor:");
 		rlabel3 = new JLabel("Choose constant a:");
 
-		JComboBox functionsChooser = new JComboBox(functionNames);
+    // options for choosing different functions
+		JComboBox functionsChooser = new JComboBox(myCanvas.functionNames);
 			// add ActionListener to JComboBox
 			functionsChooser.addActionListener (new ActionListener () {
 					public void actionPerformed(ActionEvent e) {
@@ -49,7 +46,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 					}
 			});
 
-		// initialize slider for changing the number of desired col or row value
+		// initialize slider for constant a
 		constantSlider = new JSlider(JSlider.HORIZONTAL,1,11,1);
 		constantSlider.setMajorTickSpacing(2);
 		constantSlider.setMinorTickSpacing(1);
@@ -72,9 +69,9 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 
 	// listen for changes in values of sliders
   public void stateChanged(ChangeEvent ev){
-    // get lambda value
+    // get scale value
 		int scaleVal = scalingSlider.getValue();
-		// get number of row col value
+		// get constant a
 		int aVal = constantSlider.getValue();
 		// update state
 		myCanvas.state.put("scale",scaleVal);
@@ -83,6 +80,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		myCanvas.update();
 	}//end stateChanged
 
+  // return appropriate scale factor based on function
 	public int setScaleValue(String choseFunc){
 		switch(choseFunc){
 			case "r = cos(3*theta)": return 70;

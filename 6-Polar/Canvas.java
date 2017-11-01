@@ -1,8 +1,6 @@
 
 /**
- * SimpleCanvas.java
- *
- * Part of the basic graphics Template.
+ * Canvas.java
  *
  */
 
@@ -13,31 +11,29 @@ import java.awt.geom.*;
 import java.util.*;
 
 
-public class SimpleCanvas extends JPanel{
+public class Canvas extends JPanel{
 
-    Color myColor;
-    HashMap state;
-    String[] functionNames;
-    double[] theta;
+    HashMap state; // current state
+    String[] functionNames; // list of functions to plot
+    double[] theta; // radians from 0 to 2Pi
 
-    public SimpleCanvas (){
+    // constructor
+    public Canvas (){
   		//The following is another way to guarantee correct size.
   		setPreferredSize(new Dimension(300,300));
   		setBackground(Color.white);
-      myColor = Color.red;
 
+      // init vars
       functionNames = getFunctionNames();
-
       state = new HashMap();
       state.put("func",functionNames[0]);
       state.put("scale",70);
       state.put("a",1);
-
       theta = new double[361];
       for(int degree=0; degree<=360; degree++)
         theta[degree] = Math.toRadians(degree);
 
-    }
+    }// end constructor
 
     public void paintComponent(Graphics g){
 
@@ -45,23 +41,14 @@ public class SimpleCanvas extends JPanel{
 
   		Graphics2D g2d = (Graphics2D)g; //cast so we can use JAVA2D.
   		g2d.translate(getWidth()/2,getHeight()/2);
-
-  		g2d.setPaint(myColor);
+  		g2d.setPaint(Color.red);
 
       // draw based on state
       if(state != null){
-        // theta 0 - 360
-
-        double[] theta = new double[361];
-        for(int thetaDegree=0; thetaDegree<=360; thetaDegree++){
-          double rad = Math.toRadians(thetaDegree);
-          theta[thetaDegree] = rad;
-        }
-        //get output
-        ArrayList<double[]> outs = polarFunc(functionNames,(String)state.get("func"),theta,(int)state.get("a"));
+        ArrayList<double[]> outs = polarFunc((String)state.get("func"),theta,(int)state.get("a"));
         for(double[] out: outs){
           Path2D.Double path = null;
-          for(int i=0; i<=360; i++){
+          for(int i=0; i<theta.length; i++){
             double r = out[i];
             r *= (int)state.get("scale");
             double angle = theta[i];
@@ -79,9 +66,10 @@ public class SimpleCanvas extends JPanel{
 
 	 }
 
-  public ArrayList<double[]> polarFunc(String[]functionNames,String type, double[] inp, int a){
-    double[] out1 = new double[361];
-    double[] out2 = new double[361];
+  // calculate output based on chose function
+  public ArrayList<double[]> polarFunc(String type, double[] inp, int a){
+    double[] out1 = new double[theta.length];
+    double[] out2 = new double[theta.length];
     ArrayList<double[]> result = new ArrayList<>();
     result.add(out1);
     switch(type){
@@ -117,10 +105,12 @@ public class SimpleCanvas extends JPanel{
     return result;
   }
 
+  // to repaint
   public void update(){
     repaint();
   }
 
+  // returns list of available functions
   public String[] getFunctionNames(){
     String func1 = "r = cos(3*theta)";
     String func2 = "r = a(theta)";
