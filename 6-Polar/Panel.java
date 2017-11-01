@@ -15,10 +15,6 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 	JSlider scalingSlider, constantSlider;
 	JLabel rlabel1,rlabel2,rlabel3;
 
-	// state that will keep track of current state
-	// like how many squares should be on the screen
-	HashMap state;
-
 	// current instance of canvas so that
 	// we can tell canvas to update on user input
 	SimpleCanvas myCanvas;
@@ -42,12 +38,14 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		rlabel2 = new JLabel("Choose scaling factor:");
 		rlabel3 = new JLabel("Choose constant a:");
 
-		JComboBox chooseElement = new JComboBox(functionNames);
+		JComboBox functionsChooser = new JComboBox(functionNames);
 			// add ActionListener to JComboBox
-			chooseElement.addActionListener (new ActionListener () {
+			functionsChooser.addActionListener (new ActionListener () {
 					public void actionPerformed(ActionEvent e) {
-						String chosenElement = (String)chooseElement.getSelectedItem();
-						myCanvas.state.put("func",chosenElement);
+						String choseFunc = (String)functionsChooser.getSelectedItem();
+						myCanvas.state.put("func",choseFunc);
+						setScaleValue(choseFunc);
+						scalingSlider.setValue(30);
 						myCanvas.update();
 					}
 			});
@@ -65,7 +63,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		// create JPanel and add all the components to it
 		JPanel r = new JPanel();
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
-		for(JComponent component: new JComponent[]{rlabel1,chooseElement,rlabel2,
+		for(JComponent component: new JComponent[]{rlabel1,functionsChooser,rlabel2,
 			scalingSlider,rlabel3,constantSlider})r.add(component);
 
 		add(r); // add the newly created JPanel to this class
@@ -83,32 +81,20 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		myCanvas.state.put("scale",scaleVal);
 		myCanvas.state.put("a",aVal);
 		// render updates
-		updateStateGUI();
+		myCanvas.update();
 	}//end stateChanged
 
-	public void updateStateGUI(){
-		// render changes in "state"
-		// String mode = (String)state.get("mode");
-		// char[] arr = mode.toCharArray();
-		// if(arr[0] == 'S'){
-		// 	rlabel3.setVisible(false);
-		// 	constantSlider.setVisible(false);
-		// 	state.put("rowcolVal",1);
-		// 	constantSlider.setValue(1);
-		// }else{
-		// 	rlabel3.setVisible(true);
-		// 	constantSlider.setVisible(true);
-		// }
+	public void setScaleValue(String choseFunc){
+		int scaleFactor = 30;
+		switch(choseFunc){
+			case "r = cos(3*theta)": scaleFactor = 70; break;
+			case "r = a(theta)": scaleFactor = 15; break;
+		}
+		scalingSlider.setValue(scaleFactor);
+	}
 
-		// call canvas to re-create squares based on
-		// changes in "state"
-		myCanvas.update();
-	}//end updateStateGUI
-
-	// send updates to Canvas
+	// ActionListener method
 	public void actionPerformed(ActionEvent e) {
-		// JButton btn = (JButton)e.getSource(); // get which button was clicked
-		// myCanvas.btnClicked(btn.getText()); // send command to Canvas
 	}// end actionPerformed
 
 }// Panel

@@ -27,16 +27,15 @@ public class SimpleCanvas extends JPanel{
       myColor = Color.red;
 
       functionNames = getFunctionNames();
+
       state = new HashMap();
       state.put("func",functionNames[0]);
-      state.put("scale",1);
+      state.put("scale",70);
       state.put("a",1);
 
       theta = new double[361];
-      for(int thetaDegree=0; thetaDegree<=360; thetaDegree++){
-        double rad = Math.toRadians(thetaDegree);
-        theta[thetaDegree] = rad;
-      }
+      for(int degree=0; degree<=360; degree++)
+        theta[degree] = Math.toRadians(degree);
 
     }
 
@@ -98,67 +97,36 @@ public class SimpleCanvas extends JPanel{
         return result;
       case "r = a(1+cos(theta)) and r = a(1+2cos(theta))":
         for(int i=0; i<inp.length; i++){
-          out1[i] = a*(1+Math.cos(i));
+          out1[i] = a*(1+Math.cos(inp[i]));
         }
         for(int i=0; i<inp.length; i++){
-          out2[i] =a*(1+2*Math.cos(i));
+          out2[i] =a*(1+2*Math.cos(inp[i]));
         }
         result.add(out2);
         return result;
       case "r = 1+2cos(4*theta) and r = 1+2cos(3*theta)":
         for(int i=0; i<inp.length; i++){
-          out1[i] = Math.cos(inp[i]);
+          out1[i] = 1+2*Math.cos(4*inp[i]);
         }
+        for(int i=0; i<inp.length; i++){
+          out2[i] = 1+2*Math.cos(3*inp[i]);
+        }
+        result.add(out2);
         return result;
     }
     return result;
-  }
-
-  //  cos(3*theta)
-  public double func1(double theta){
-     return Math.cos(theta);
-  }
-
-  // a*theta
-  public double func2(double theta){
-    double a = 1.0;
-    return a*theta;
   }
 
   public void update(){
     repaint();
   }
 
-  //
-  public double func3(double theta){
-    double a = 1.0;
-    return a*(1+Math.cos(theta));
-  }
-
-  //
-  public double func32(double theta){
-    double a = 1.0;
-    return a*(1+2*Math.cos(theta));
-  }
-
-  // func 4
-
-  //
-  public double func5(double theta){
-    return 1+2*Math.cos(4*theta);
-  }
-
-  public double func52(double theta){
-    return 1+2*Math.cos(3*theta);
-  }
-
   public String[] getFunctionNames(){
     String func1 = "r = cos(3*theta)";
     String func2 = "r = a(theta)";
     String func3 = "r = a(1+cos(theta)) and r = a(1+2cos(theta))";
-    String func4 = "r = cos(3*theta)"; // TODO
-    String func5 = "r = 1+2cos(4*theta) and r = 1+2cos(3*theta)";
-    return new String[]{func1,func2,func3,func4,func5};
+    String func4 = "r = 1+2cos(4*theta) and r = 1+2cos(3*theta)";
+    return new String[]{func1,func2,func3,func4};
   }
 
 }// SimpleCanvas
