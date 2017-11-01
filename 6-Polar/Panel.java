@@ -29,7 +29,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		String[] functionNames = myCanvas.functionNames;
 
 		// initialize slider for changing Lambda value
-    scalingSlider = new JSlider(JSlider.HORIZONTAL,1,100,1);
+    scalingSlider = new JSlider(JSlider.HORIZONTAL,1,100,70);
 		scalingSlider.setMajorTickSpacing(10);
 		scalingSlider.setMinorTickSpacing(5);
 
@@ -44,8 +44,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 					public void actionPerformed(ActionEvent e) {
 						String choseFunc = (String)functionsChooser.getSelectedItem();
 						myCanvas.state.put("func",choseFunc);
-						setScaleValue(choseFunc);
-						scalingSlider.setValue(30);
+						scalingSlider.setValue(setScaleValue(choseFunc));
 						myCanvas.update();
 					}
 			});
@@ -84,13 +83,12 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		myCanvas.update();
 	}//end stateChanged
 
-	public void setScaleValue(String choseFunc){
-		int scaleFactor = 30;
+	public int setScaleValue(String choseFunc){
 		switch(choseFunc){
-			case "r = cos(3*theta)": scaleFactor = 70; break;
-			case "r = a(theta)": scaleFactor = 15; break;
+			case "r = cos(3*theta)": return 70;
+			case "r = a(theta)": return 15;
 		}
-		scalingSlider.setValue(scaleFactor);
+    return 30;
 	}
 
 	// ActionListener method
