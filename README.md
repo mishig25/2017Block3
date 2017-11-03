@@ -12,3 +12,6 @@ Introduction to the algorithms and theory necessary for producing graphic images
 2. [Color Test](https://github.com/mishig25/2017Block3/tree/master/2-ColorTest)
 3. [Gradient Triangles](https://github.com/mishig25/2017Block3/tree/master/3-ShadedTriangles)
 4. [Spiraling Squares](https://github.com/mishig25/2017Block3/tree/master/4-Spiral)
+5. [Face Construction](https://github.com/mishig25/2017Block3/tree/master/5-Face)
+6. [Free Hand Draw](https://github.com/mishig25/2017Block3/tree/master/6-FreeHandDraw)
+7. [Polar Coord](https://github.com/mishig25/2017Block3/tree/master/7-Polar)
