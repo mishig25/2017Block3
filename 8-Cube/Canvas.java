@@ -1,6 +1,6 @@
 
 /**
- * SimpleCanvas.java
+ * Canvas.java
  *
  * Draws Three Rectangles to Form Pythagorean Triangle.
  *
@@ -13,7 +13,7 @@ import java.awt.geom.*;
 import java.util.*;
 
 
-public class SimpleCanvas extends JPanel implements MouseListener{
+public class Canvas extends JPanel implements MouseListener{
 
   // define vertices x,y,z
   double[] vertA = {-1,1,1};
@@ -24,6 +24,8 @@ public class SimpleCanvas extends JPanel implements MouseListener{
   double[] vertH = {1,1,-1};
   double[] vertE = {1,-1,-1};
   double[] vertF = {-1,-1,-1};
+
+  HashMap state = new HashMap();
 
   ArrayList<double[]> verts = new ArrayList<>(Arrays.asList(vertA,vertB,vertC,vertD,vertE,vertF,vertG,vertH));
 
@@ -39,7 +41,7 @@ public class SimpleCanvas extends JPanel implements MouseListener{
   ArrayList<ArrayList<double[]>> cube = new ArrayList<>(Arrays.asList(faceA,faceB,faceC,faceD,faceE,faceF));
 
 
-  public SimpleCanvas (){
+  public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.white);
@@ -64,7 +66,7 @@ public class SimpleCanvas extends JPanel implements MouseListener{
       for(int i=0;i<5;i++){
         double[] vert = face.get(i%4);
 
-        vert = rotateZ(vert);
+        vert = rotateY(vert);
 
         int s = 50;
         double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
@@ -110,7 +112,7 @@ public class SimpleCanvas extends JPanel implements MouseListener{
 
   public double[] rotateY(double[] vert){
     // arount z-axis
-    double rad = Math.toRadians(30);
+    double rad = Math.toRadians(3);
     double[] M1 = {Math.cos(rad),0,Math.sin(rad)};
     double[] M2 = {0,1,0};
     double[] M3 = {-Math.sin(rad),0,Math.cos(rad)};
@@ -143,6 +145,10 @@ public class SimpleCanvas extends JPanel implements MouseListener{
     System.out.println();
   }
 
+  public void update(){
+    repaint();
+  }
+
     //Empty methods to satisfy MouseListener interface
 	 public void mouseEntered(MouseEvent e){}
 
@@ -152,4 +158,4 @@ public class SimpleCanvas extends JPanel implements MouseListener{
 
 	 public void mouseReleased(MouseEvent e){}
 
-}// SimpleCanvas
+}// Canvas

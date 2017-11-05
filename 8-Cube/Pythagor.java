@@ -4,6 +4,7 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Pythagor{
 
@@ -12,8 +13,11 @@ public class Pythagor{
     //and then stops.
 
     public static void main(String[] args){
-		SimpleCanvas myCanvas = new SimpleCanvas();
+
+		Canvas myCanvas = new Canvas();
 		JFrame myFrame = new JFrame();
+    Panel sliders = new Panel(myCanvas);
+
 		myFrame.setTitle("3D Cube");
 		myFrame.setSize(500,500);
 
@@ -21,7 +25,8 @@ public class Pythagor{
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Must use getContentPane() with JFrame.
-		myFrame.add(myCanvas);
+    myFrame.add(sliders,BorderLayout.EAST);
+		myFrame.add(myCanvas,BorderLayout.CENTER);
 		myFrame.pack(); //resizes to preferred size for components.
 		myFrame.setResizable(true);
 		myFrame.setVisible(true);
