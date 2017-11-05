@@ -13,17 +13,17 @@ import java.awt.geom.*;
 import java.util.*;
 
 
-public class Canvas extends JPanel implements MouseListener{
+public class Canvas extends JPanel{
 
   // define vertices x,y,z
   double[] vertA = {-1,1,1};
   double[] vertB = {1,1,1};
   double[] vertC = {1,-1,1};
   double[] vertD = {-1,-1,1};
-  double[] vertG = {-1,1,-1};
-  double[] vertH = {1,1,-1};
-  double[] vertE = {1,-1,-1};
-  double[] vertF = {-1,-1,-1};
+  double[] vertE = {-1,1,-1};
+  double[] vertF = {1,1,-1};
+  double[] vertG = {1,-1,-1};
+  double[] vertH = {-1,-1,-1};
 
   HashMap state = new HashMap();
 
@@ -45,7 +45,11 @@ public class Canvas extends JPanel implements MouseListener{
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.white);
-		addMouseListener(this);
+
+    // init state
+    state.put("axis","Z-axis");
+    state.put("degree",0);
+    state.put("renderMode","Wireframe");
 
   }
 
@@ -60,21 +64,38 @@ public class Canvas extends JPanel implements MouseListener{
 
     // plot points
 
+    System.out.println((String)state.get("axis")+" "+(Integer)state.get("degree"));
+
+    String axis = (String)state.get("axis");
+    int deg = (Integer)state.get("degree");
+    // for(double[] vert: verts){
+    //       int s = 20;
+    //       double[] vertTransformed = rotate(vert,axis,deg);
+    //       double x = vertTransformed[0]*s, y=vertTransformed[1]*s, z=vertTransformed[2]*s;
+    //       double e = 30;
+    //       // x /= (1-z/e);
+    //       // y /= (1-z/e);
+    //
+    //       Ellipse2D.Double el = new Ellipse2D.Double(x,y,2,2);
+    //       g2d.fill(el);
+    // }
+
+    // cube = new ArrayList<>(Arrays.asList(faceB));
     for(ArrayList<double[]> face: cube){
       // draw wireframe
       Path2D.Double wireFace = null;
       for(int i=0;i<5;i++){
         double[] vert = face.get(i%4);
 
-        vert = rotateY(vert);
+        vert = rotate(vert,axis,deg);
 
-        int s = 50;
+        int s = 20;
         double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
         // print(vert);
         // print(rotate(vert));
-        double e = 20;
-        x /= (1-z/e);
-        y /= (1-z/e);
+        // double e = 20;
+        // x /= (1-z/e);
+        // y /= (1-z/e);
         if(wireFace == null){
           wireFace = new Path2D.Double();
           wireFace.moveTo(x,y);
@@ -89,15 +110,15 @@ public class Canvas extends JPanel implements MouseListener{
 
 	}
 
-	public void mouseClicked(MouseEvent e){
-    //  rotate();
-		 repaint();
-	 }
-
+  public double[] rotate(double[] vert, String axis, int deg){
+    if(axis=="Z-axis") return rotateZ(vert,deg);
+    if(axis=="Y-axis") return rotateY(vert,deg);
+    return rotateX(vert,deg);
+  }
   //  rotate method
-  public double[] rotateZ(double[] vert){
+  public double[] rotateZ(double[] vert, int deg){
     // arount z-axis
-    double rad = Math.toRadians(30);
+    double rad = Math.toRadians(deg);
     double[] M1 = {Math.cos(rad),-Math.sin(rad),0};
     double[] M2 = {Math.sin(rad),Math.cos(rad),0};
     double[] M3 = {0,0,1};
@@ -110,9 +131,9 @@ public class Canvas extends JPanel implements MouseListener{
     return vertT;
   }
 
-  public double[] rotateY(double[] vert){
+  public double[] rotateY(double[] vert, int deg){
     // arount z-axis
-    double rad = Math.toRadians(3);
+    double rad = Math.toRadians(deg);
     double[] M1 = {Math.cos(rad),0,Math.sin(rad)};
     double[] M2 = {0,1,0};
     double[] M3 = {-Math.sin(rad),0,Math.cos(rad)};
@@ -125,9 +146,9 @@ public class Canvas extends JPanel implements MouseListener{
     return vertT;
   }
 
-  public double[] rotateX(double[] vert){
+  public double[] rotateX(double[] vert, int deg){
     // arount z-axis
-    double rad = Math.toRadians(30);
+    double rad = Math.toRadians(deg);
     double[] M1 = {1,0,0};
     double[] M2 = {0,Math.cos(rad),-Math.sin(rad)};
     double[] M3 = {0,Math.sin(rad),Math.cos(rad)};
@@ -148,14 +169,5 @@ public class Canvas extends JPanel implements MouseListener{
   public void update(){
     repaint();
   }
-
-    //Empty methods to satisfy MouseListener interface
-	 public void mouseEntered(MouseEvent e){}
-
-	 public void mouseExited(MouseEvent e){}
-
-	 public void mousePressed(MouseEvent e){}
-
-	 public void mouseReleased(MouseEvent e){}
 
 }// Canvas
