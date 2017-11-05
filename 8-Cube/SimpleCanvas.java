@@ -24,6 +24,7 @@ public class SimpleCanvas extends JPanel implements MouseListener{
   double[] vertH = {1,1,-1};
   double[] vertE = {1,-1,-1};
   double[] vertF = {-1,-1,-1};
+
   ArrayList<double[]> verts = new ArrayList<>(Arrays.asList(vertA,vertB,vertC,vertD,vertE,vertF,vertG,vertH));
 
   // define faces counter-clockwise
@@ -55,25 +56,20 @@ public class SimpleCanvas extends JPanel implements MouseListener{
     g2d.scale(2,2);
     g2d.setColor(Color.black);
 
-    // draw all points, scale, perspective
-    // for(double[] vert: verts){
-    //   // render ellipse 2d
-    //   int s = 50;
-    //   double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
-    //   double e = 20;
-    //   x /= (1-z/e);
-    //   y /= (1-z/e);
-    //   Ellipse2D.Double point = new Ellipse2D.Double(x,y,3,3);
-    //   g2d.fill(point);
-    // }
+    // plot points
 
     for(ArrayList<double[]> face: cube){
       // draw wireframe
       Path2D.Double wireFace = null;
       for(int i=0;i<5;i++){
         double[] vert = face.get(i%4);
+
+        vert = rotateZ(vert);
+
         int s = 50;
         double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+        // print(vert);
+        // print(rotate(vert));
         double e = 20;
         x /= (1-z/e);
         y /= (1-z/e);
@@ -91,10 +87,61 @@ public class SimpleCanvas extends JPanel implements MouseListener{
 
 	}
 
-	 public void mouseClicked(MouseEvent e){
-     System.out.println("Mouse clicked");
-		repaint();
+	public void mouseClicked(MouseEvent e){
+    //  rotate();
+		 repaint();
 	 }
+
+  //  rotate method
+  public double[] rotateZ(double[] vert){
+    // arount z-axis
+    double rad = Math.toRadians(30);
+    double[] M1 = {Math.cos(rad),-Math.sin(rad),0};
+    double[] M2 = {Math.sin(rad),Math.cos(rad),0};
+    double[] M3 = {0,0,1};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
+  public double[] rotateY(double[] vert){
+    // arount z-axis
+    double rad = Math.toRadians(30);
+    double[] M1 = {Math.cos(rad),0,Math.sin(rad)};
+    double[] M2 = {0,1,0};
+    double[] M3 = {-Math.sin(rad),0,Math.cos(rad)};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
+  public double[] rotateX(double[] vert){
+    // arount z-axis
+    double rad = Math.toRadians(30);
+    double[] M1 = {1,0,0};
+    double[] M2 = {0,Math.cos(rad),-Math.sin(rad)};
+    double[] M3 = {0,Math.sin(rad),Math.cos(rad)};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
+  public void print(double[] arr){
+    for(double val: arr)System.out.print(val+" ");
+    System.out.println();
+  }
 
     //Empty methods to satisfy MouseListener interface
 	 public void mouseEntered(MouseEvent e){}

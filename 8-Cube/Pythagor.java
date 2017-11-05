@@ -14,7 +14,7 @@ public class Pythagor{
     public static void main(String[] args){
 		SimpleCanvas myCanvas = new SimpleCanvas();
 		JFrame myFrame = new JFrame();
-		myFrame.setTitle("Pythagorean Triangle");
+		myFrame.setTitle("3D Cube");
 		myFrame.setSize(500,500);
 
 		//Sets the window to close when upper right corner clicked.
