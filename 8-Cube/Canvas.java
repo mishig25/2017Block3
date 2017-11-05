@@ -12,10 +12,12 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 
-class Polygon{
+class Polygon implements Comparable<Polygon>{
 
   ArrayList<double[]> vertices;
   ArrayList<double[]> verticesTransformed;
+  double averageZ = 0;
+  Color color = Color.gray;
 
   public Polygon(ArrayList<double[]> _vertices){
     vertices = _vertices;
@@ -40,6 +42,40 @@ class Polygon{
       }
     }
     g2d.draw(wireFace);
+  }
+
+  public void solid(Graphics2D g2d){
+    Path2D.Double wireFace = null;
+    for(int i=0;i<5;i++){
+      double[] vert = verticesTransformed.get(i%4);
+          int s = 20;
+          double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+      if(wireFace == null){
+        wireFace = new Path2D.Double();
+        wireFace.moveTo(x,y);
+      }else{
+        wireFace.lineTo(x,y);
+      }
+    }
+    g2d.setColor(color);
+    g2d.fill(wireFace);
+  }
+
+  @Override
+  public int compareTo(Polygon another) {
+      if (this.averageZ < another.averageZ){
+          return -1;
+      }else{
+          return 1;
+      }
+  }
+
+  public double calcAverageZ(){
+    double result = 0;
+    for(double[] vert: verticesTransformed) result+=vert[2];
+    result /= verticesTransformed.size();
+    averageZ = result;
+    return result;
   }
 
   public double[] rotateVert(double[] vert, String axis, int deg){
@@ -111,21 +147,27 @@ public class Canvas extends JPanel{
   ArrayList<double[]> verts = new ArrayList<>(Arrays.asList(vertA,vertB,vertC,vertD,vertE,vertF,vertG,vertH));
 
   // define faces counter-clockwise
-  ArrayList<double[]> faceA = new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD));
-  ArrayList<double[]> faceB = new ArrayList<>(Arrays.asList(vertG,vertF,vertB,vertC));
-  ArrayList<double[]> faceC = new ArrayList<>(Arrays.asList(vertH,vertE,vertF,vertG));
-  ArrayList<double[]> faceD = new ArrayList<>(Arrays.asList(vertD,vertA,vertE,vertH));
-  ArrayList<double[]> faceE = new ArrayList<>(Arrays.asList(vertB,vertF,vertE,vertA));
-  ArrayList<double[]> faceF = new ArrayList<>(Arrays.asList(vertG,vertC,vertD,vertH));
+  Polygon faceA = new Polygon(new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD)));
+  Polygon faceB = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertF,vertB,vertC)));
+  Polygon faceC = new Polygon(new ArrayList<>(Arrays.asList(vertH,vertE,vertF,vertG)));
+  Polygon faceD = new Polygon(new ArrayList<>(Arrays.asList(vertD,vertA,vertE,vertH)));
+  Polygon faceE = new Polygon(new ArrayList<>(Arrays.asList(vertB,vertF,vertE,vertA)));
+  Polygon faceF = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertC,vertD,vertH)));
 
   // define cube
-  ArrayList<ArrayList<double[]>> cube = new ArrayList<>(Arrays.asList(faceA,faceB,faceC,faceD,faceE,faceF));
+  ArrayList<Polygon> cube = new ArrayList<>(Arrays.asList(faceA,faceB,faceC,faceD,faceE,faceF));
 
 
   public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.white);
+
+    Color[] colors = {Color.red,Color.green,Color.blue,
+                      Color.orange,Color.lightGray,Color.black};
+    for(int i=0; i<colors.length; i++){
+      cube.get(i).color = colors[i];
+    }
 
     // init state
     state.put("axis","Z-axis");
@@ -190,9 +232,23 @@ public class Canvas extends JPanel{
     //
     // }
 
-    Polygon p = new Polygon(new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD)));
-    p.rotate(axis,deg);
-    p.wireframe(g2d);
+
+
+    for(Polygon face: cube){
+      face.rotate(axis,deg);
+      face.wireframe(g2d);
+      face.calcAverageZ();
+    }
+    Collections.sort(cube);
+    // System.out.println("SORTED LIST");
+    // for(Polygon face: cube){
+    //   System.out.println(face.averageZ);
+    // }
+
+    // solid paint
+    for(Polygon face: cube){
+      face.solid(g2d);
+    }
 	}
 
   public void print(double[] arr){
