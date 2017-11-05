@@ -12,6 +12,87 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 
+class Polygon{
+
+  ArrayList<double[]> vertices;
+  ArrayList<double[]> verticesTransformed;
+
+  public Polygon(ArrayList<double[]> _vertices){
+    vertices = _vertices;
+  }
+
+  public void rotate(String axis, int deg){
+    verticesTransformed = new ArrayList<>();
+    for(double[] vert: vertices) verticesTransformed.add(rotateVert(vert,axis,deg));
+  }
+
+  public void wireframe(Graphics2D g2d){
+    Path2D.Double wireFace = null;
+    for(int i=0;i<5;i++){
+      double[] vert = verticesTransformed.get(i%4);
+          int s = 20;
+          double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+      if(wireFace == null){
+        wireFace = new Path2D.Double();
+        wireFace.moveTo(x,y);
+      }else{
+        wireFace.lineTo(x,y);
+      }
+    }
+    g2d.draw(wireFace);
+  }
+
+  public double[] rotateVert(double[] vert, String axis, int deg){
+    if(axis=="Z-axis") return rotateZ(vert,deg);
+    if(axis=="Y-axis") return rotateY(vert,deg);
+    return rotateX(vert,deg);
+  }
+  //  rotate method
+  public double[] rotateZ(double[] vert, int deg){
+    // arount z-axis
+    double rad = Math.toRadians(deg);
+    double[] M1 = {Math.cos(rad),-Math.sin(rad),0};
+    double[] M2 = {Math.sin(rad),Math.cos(rad),0};
+    double[] M3 = {0,0,1};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
+  public double[] rotateY(double[] vert, int deg){
+    // arount z-axis
+    double rad = Math.toRadians(deg);
+    double[] M1 = {Math.cos(rad),0,Math.sin(rad)};
+    double[] M2 = {0,1,0};
+    double[] M3 = {-Math.sin(rad),0,Math.cos(rad)};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
+  public double[] rotateX(double[] vert, int deg){
+    // arount z-axis
+    double rad = Math.toRadians(deg);
+    double[] M1 = {1,0,0};
+    double[] M2 = {0,Math.cos(rad),-Math.sin(rad)};
+    double[] M3 = {0,Math.sin(rad),Math.cos(rad)};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+}// end Polygon
 
 public class Canvas extends JPanel{
 
@@ -81,85 +162,38 @@ public class Canvas extends JPanel{
     // }
 
     // cube = new ArrayList<>(Arrays.asList(faceB));
-    for(ArrayList<double[]> face: cube){
-      // draw wireframe
-      Path2D.Double wireFace = null;
-      for(int i=0;i<5;i++){
-        double[] vert = face.get(i%4);
+    // for(ArrayList<double[]> face: cube){
+    //   // draw wireframe
+    //   Path2D.Double wireFace = null;
+    //   for(int i=0;i<5;i++){
+    //     double[] vert = face.get(i%4);
+    //
+    //     vert = rotate(vert,axis,deg);
+    //
+    //     int s = 20;
+    //     double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+    //
+    //     // print(vert);
+    //     // print(rotate(vert));
+    //     // double e = 20;
+    //     // x /= (1-z/e);
+    //     // y /= (1-z/e);
+    //     if(wireFace == null){
+    //       wireFace = new Path2D.Double();
+    //       wireFace.moveTo(x,y);
+    //     }else{
+    //       wireFace.lineTo(x,y);
+    //     }
+    //     // wireFace.closePath();
+    //     g2d.draw(wireFace);
+    //   }
+    //
+    // }
 
-        vert = rotate(vert,axis,deg);
-
-        int s = 20;
-        double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
-        // print(vert);
-        // print(rotate(vert));
-        // double e = 20;
-        // x /= (1-z/e);
-        // y /= (1-z/e);
-        if(wireFace == null){
-          wireFace = new Path2D.Double();
-          wireFace.moveTo(x,y);
-        }else{
-          wireFace.lineTo(x,y);
-        }
-        // wireFace.closePath();
-        g2d.draw(wireFace);
-      }
-
-    }
-
+    Polygon p = new Polygon(new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD)));
+    p.rotate(axis,deg);
+    p.wireframe(g2d);
 	}
-
-  public double[] rotate(double[] vert, String axis, int deg){
-    if(axis=="Z-axis") return rotateZ(vert,deg);
-    if(axis=="Y-axis") return rotateY(vert,deg);
-    return rotateX(vert,deg);
-  }
-  //  rotate method
-  public double[] rotateZ(double[] vert, int deg){
-    // arount z-axis
-    double rad = Math.toRadians(deg);
-    double[] M1 = {Math.cos(rad),-Math.sin(rad),0};
-    double[] M2 = {Math.sin(rad),Math.cos(rad),0};
-    double[] M3 = {0,0,1};
-
-    double[] vertT = new double[3];
-    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
-
-    return vertT;
-  }
-
-  public double[] rotateY(double[] vert, int deg){
-    // arount z-axis
-    double rad = Math.toRadians(deg);
-    double[] M1 = {Math.cos(rad),0,Math.sin(rad)};
-    double[] M2 = {0,1,0};
-    double[] M3 = {-Math.sin(rad),0,Math.cos(rad)};
-
-    double[] vertT = new double[3];
-    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
-
-    return vertT;
-  }
-
-  public double[] rotateX(double[] vert, int deg){
-    // arount z-axis
-    double rad = Math.toRadians(deg);
-    double[] M1 = {1,0,0};
-    double[] M2 = {0,Math.cos(rad),-Math.sin(rad)};
-    double[] M3 = {0,Math.sin(rad),Math.cos(rad)};
-
-    double[] vertT = new double[3];
-    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
-    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
-
-    return vertT;
-  }
 
   public void print(double[] arr){
     for(double val: arr)System.out.print(val+" ");
