@@ -29,22 +29,17 @@ class Polygon implements Comparable<Polygon>{
   }
 
   public void wireframe(Graphics2D g2d){
-    Path2D.Double wireFace = null;
-    for(int i=0;i<5;i++){
-      double[] vert = verticesTransformed.get(i%4);
-          int s = 20;
-          double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
-      if(wireFace == null){
-        wireFace = new Path2D.Double();
-        wireFace.moveTo(x,y);
-      }else{
-        wireFace.lineTo(x,y);
-      }
-    }
+    Path2D.Double wireFace = createPath();
     g2d.draw(wireFace);
   }
 
   public void solid(Graphics2D g2d){
+    Path2D.Double wireFace = createPath();
+    g2d.setColor(color);
+    g2d.fill(wireFace);
+  }
+
+  private Path2D.Double createPath(){
     Path2D.Double wireFace = null;
     for(int i=0;i<5;i++){
       double[] vert = verticesTransformed.get(i%4);
@@ -57,17 +52,13 @@ class Polygon implements Comparable<Polygon>{
         wireFace.lineTo(x,y);
       }
     }
-    g2d.setColor(color);
-    g2d.fill(wireFace);
+    return wireFace;
   }
 
   @Override
   public int compareTo(Polygon another) {
-      if (this.averageZ < another.averageZ){
-          return -1;
-      }else{
-          return 1;
-      }
+    if(this.averageZ < another.averageZ) return -1;
+    return 1;
   }
 
   public double calcAverageZ(){
@@ -191,64 +182,20 @@ public class Canvas extends JPanel{
 
     String axis = (String)state.get("axis");
     int deg = (Integer)state.get("degree");
-    // for(double[] vert: verts){
-    //       int s = 20;
-    //       double[] vertTransformed = rotate(vert,axis,deg);
-    //       double x = vertTransformed[0]*s, y=vertTransformed[1]*s, z=vertTransformed[2]*s;
-    //       double e = 30;
-    //       // x /= (1-z/e);
-    //       // y /= (1-z/e);
-    //
-    //       Ellipse2D.Double el = new Ellipse2D.Double(x,y,2,2);
-    //       g2d.fill(el);
-    // }
-
-    // cube = new ArrayList<>(Arrays.asList(faceB));
-    // for(ArrayList<double[]> face: cube){
-    //   // draw wireframe
-    //   Path2D.Double wireFace = null;
-    //   for(int i=0;i<5;i++){
-    //     double[] vert = face.get(i%4);
-    //
-    //     vert = rotate(vert,axis,deg);
-    //
-    //     int s = 20;
-    //     double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
-    //
-    //     // print(vert);
-    //     // print(rotate(vert));
-    //     // double e = 20;
-    //     // x /= (1-z/e);
-    //     // y /= (1-z/e);
-    //     if(wireFace == null){
-    //       wireFace = new Path2D.Double();
-    //       wireFace.moveTo(x,y);
-    //     }else{
-    //       wireFace.lineTo(x,y);
-    //     }
-    //     // wireFace.closePath();
-    //     g2d.draw(wireFace);
-    //   }
-    //
-    // }
-
-
+    String renderMode = (String)state.get("renderMode");
 
     for(Polygon face: cube){
       face.rotate(axis,deg);
-      face.wireframe(g2d);
       face.calcAverageZ();
     }
     Collections.sort(cube);
-    // System.out.println("SORTED LIST");
-    // for(Polygon face: cube){
-    //   System.out.println(face.averageZ);
-    // }
 
-    // solid paint
-    for(Polygon face: cube){
-      face.solid(g2d);
+    if(renderMode == "Wireframe"){
+      for(Polygon face: cube) face.wireframe(g2d);
+    }else{
+      for(Polygon face: cube) face.solid(g2d);
     }
+
 	}
 
   public void print(double[] arr){
