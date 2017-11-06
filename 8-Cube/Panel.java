@@ -11,9 +11,10 @@
 
 class Panel extends JPanel implements ChangeListener, ActionListener{
 
-	// sliders and labels
-	JSlider degreeSlider;
-	JLabel rlabel0,rlabel1,rlabel2;
+  // instance vars
+	JSlider degreeSlider; // slider for choosing degree
+	JLabel rlabel0,rlabel1,rlabel2; // labels
+  JTextField xField, yField, zField; // textFields for entering arbitrary axes
 
 	// current instance of canvas so that
 	// we can tell canvas to update on user input
@@ -26,17 +27,20 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 
 		// initialize slider for changing scale value
     degreeSlider = new JSlider(JSlider.HORIZONTAL,-180,180,0);
-		degreeSlider.setMajorTickSpacing(60);
-		degreeSlider.setMinorTickSpacing(5);
+    initSlider(degreeSlider);
 
 		// initialize labels
-    int center = SwingConstants.CENTER;
-    rlabel0 = new JLabel("Choose Render Mode:",center);
-		rlabel1 = new JLabel("Choose Axis:",center);
-		rlabel2 = new JLabel("Choose degree to rotate:",center);
+    rlabel0 = new JLabel("Choose Render Mode:");
+		rlabel1 = new JLabel("Choose Axis:");
+    rlabel2 = new JLabel("Choose degree to rotate:");
 
+    // init components related to arbitrary axis
     JPanel panelArbAxis = new JPanel();
-    panelArbAxis.setVisible(false);
+    initPanelArbAxis(panelArbAxis);
+    JLabel arbLabel = new JLabel("CLICK on the button to set axis");
+    JButton chooseArbAxis = new JButton("ROTATE AROUND THIS AXIS");
+    JComponent[] arbComponents = {panelArbAxis,chooseArbAxis,arbLabel};
+    for(JComponent c: arbComponents) c.setVisible(false);
 
     // options for choosing different functions
     String[] axes = {"Z-axis","X-axis","Y-axis","Arbitrary-axis"};
@@ -49,53 +53,33 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 						degreeSlider.setValue(0);
 						if(chosenAxis != axes[axes.length-1]){
               myCanvas.update();
-              panelArbAxis.setVisible(false);
+              for(JComponent c: arbComponents) c.setVisible(false);
             }else{
-              panelArbAxis.setVisible(true);
+              for(JComponent c: arbComponents) c.setVisible(true);
             }
 					}
 			});
 
-    // render mode
+    // JComboBox for choose between Wireframe and Solid
     String[] renderModes = {"Wireframe","Solid"};
     JComboBox renderChooser = new JComboBox(renderModes);
     // add ActionListener to JComboBox
     renderChooser.addActionListener (new ActionListener () {
           public void actionPerformed(ActionEvent e) {
             String chosenAxis = (String)renderChooser.getSelectedItem();
+            // update state and re-render
             myCanvas.state.put("renderMode",chosenAxis);
             myCanvas.update();
           }
       });
 
-		// initialize slider for constant a
-		for (JSlider slider: new JSlider[] {degreeSlider}){
-			slider.setPaintTicks(true);
-			slider.setPaintLabels(true);
-			slider.addChangeListener(this);
-		}
+
 
 		// create JPanel and add all the components to it
 		JPanel r = new JPanel();
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
-		for(JComponent component: new JComponent[]{rlabel0,renderChooser,rlabel1,functionsChooser,rlabel2,
-			degreeSlider}) r.add(component);
 
-
-
-    JTextField xField = new JTextField("1", 3);
-    JTextField yField = new JTextField("1", 3);
-    JTextField zField = new JTextField("0", 3);
-
-		panelArbAxis.setLayout(new GridLayout(1,6,1,1));
-    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
-    panelArbAxis.add(xField);
-    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
-    panelArbAxis.add(yField);
-    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
-    panelArbAxis.add(zField);
-
-    JButton chooseArbAxis = new JButton("ROTATE AROUND THIS AXIS");
+    // add l
     chooseArbAxis.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
         myCanvas.state.put("arbX",Integer.valueOf(xField.getText()));
@@ -107,15 +91,39 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
       }
     });
 
-    r.add(panelArbAxis);
-    r.add(chooseArbAxis);
+    for(JComponent component: new JComponent[]{rlabel0,renderChooser,rlabel1,functionsChooser,rlabel2,
+			degreeSlider,panelArbAxis,panelArbAxis,arbLabel,chooseArbAxis}) r.add(component);
 
 		add(r); // add the newly created JPanel to this class
-		// updateStateGUI(); // render updates
 
   }//end contructor
 
-	// listen for changes in values of sliders
+  // initialize panel for choosing arb axis
+  public void initPanelArbAxis(JPanel panel){
+    // init text fields
+    xField = new JTextField("1", 3);
+    yField = new JTextField("1", 3);
+    zField = new JTextField("0", 3);
+    // add to JPanel
+		panel.setLayout(new GridLayout(1,6,1,1));
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(xField);
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(yField);
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(zField);
+  }// end initPanelArbAxis
+
+  // initialize degree slider
+  public void initSlider(JSlider slider){
+    slider.setMajorTickSpacing(60);
+    slider.setMinorTickSpacing(5);
+    slider.setPaintTicks(true);
+    slider.setPaintLabels(true);
+    slider.addChangeListener(this);
+  }// end initSlider
+
+	// listen for changes in values of degree slider
   public void stateChanged(ChangeEvent ev){
     // get scale value
 		int degreeVal = degreeSlider.getValue();
