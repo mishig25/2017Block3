@@ -2,7 +2,7 @@
 /**
  * Canvas.java
  *
- * Draws Three Rectangles to Form Pythagorean Triangle.
+ * Draws Cube
  *
  */
 
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Canvas extends JPanel{
 
-  // define vertices x,y,z
+  // define vertices x,y,z for Cube
   double[] vertA = {-1,1,1};
   double[] vertB = {1,1,1};
   double[] vertC = {1,-1,1};
@@ -24,32 +24,18 @@ public class Canvas extends JPanel{
   double[] vertG = {1,-1,-1};
   double[] vertH = {-1,-1,-1};
 
+  // state
   HashMap state = new HashMap();
 
-  ArrayList<double[]> verts = new ArrayList<>(Arrays.asList(vertA,vertB,vertC,vertD,vertE,vertF,vertG,vertH));
-
-  // define faces counter-clockwise
-  Polygon faceA = new Polygon(new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD)));
-  Polygon faceB = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertF,vertB,vertC)));
-  Polygon faceC = new Polygon(new ArrayList<>(Arrays.asList(vertH,vertE,vertF,vertG)));
-  Polygon faceD = new Polygon(new ArrayList<>(Arrays.asList(vertD,vertA,vertE,vertH)));
-  Polygon faceE = new Polygon(new ArrayList<>(Arrays.asList(vertB,vertF,vertE,vertA)));
-  Polygon faceF = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertC,vertD,vertH)));
-
-  // define cube
-  ArrayList<Polygon> cube = new ArrayList<>(Arrays.asList(faceA,faceB,faceC,faceD,faceE,faceF));
+  // instance vars
+  Polygon faceA,faceB,faceC,faceD,faceE,faceF;
+  ArrayList<Polygon> cube;
 
 
   public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.white);
-
-    Color[] colors = {Color.red,Color.green,Color.blue,
-                      Color.orange,Color.lightGray,Color.black};
-    for(int i=0; i<colors.length; i++){
-      cube.get(i).color = colors[i];
-    }
 
     // init state
     state.put("axis","Z-axis");
@@ -59,7 +45,21 @@ public class Canvas extends JPanel{
     state.put("arbY",1);
     state.put("arbZ",0);
 
-  }
+    // init faces
+    faceA = new Polygon(new ArrayList<>(Arrays.asList(vertC,vertB,vertA,vertD)));
+    faceB = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertF,vertB,vertC)));
+    faceC = new Polygon(new ArrayList<>(Arrays.asList(vertH,vertE,vertF,vertG)));
+    faceD = new Polygon(new ArrayList<>(Arrays.asList(vertD,vertA,vertE,vertH)));
+    faceE = new Polygon(new ArrayList<>(Arrays.asList(vertB,vertF,vertE,vertA)));
+    faceF = new Polygon(new ArrayList<>(Arrays.asList(vertG,vertC,vertD,vertH)));
+    // init cube
+    cube = new ArrayList<>(Arrays.asList(faceA,faceB,faceC,faceD,faceE,faceF));
+
+    // set different face colors
+    Color[] colors = {Color.red,Color.green,Color.blue,
+                      Color.orange,Color.lightGray,Color.black};
+    for(int i=0; i<colors.length; i++) cube.get(i).color = colors[i];
+  }// end constructor
 
   public void paintComponent(Graphics g){
 
@@ -70,35 +70,30 @@ public class Canvas extends JPanel{
     g2d.scale(2,2);
     g2d.setColor(Color.black);
 
-    // plot points
-
+    // parse current state
     String axis = (String)state.get("axis");
     int deg = (Integer)state.get("degree");
     String renderMode = (String)state.get("renderMode");
     double[] arbAxis = {(Integer)state.get("arbX"),(Integer)state.get("arbY"),(Integer)state.get("arbZ"),};
-    System.out.println(renderMode+" "+axis+" "+deg);
 
+    // rotate each faces
     for(Polygon face: cube){
       face.rotate(axis,deg,arbAxis);
       face.calcAverageZ();
     }
+    // sort faces based on Z values for Painter's algorithm
     Collections.sort(cube);
-
+    // draw faces
     if(renderMode == "Wireframe"){
       for(Polygon face: cube) face.wireframe(g2d);
     }else{
       for(Polygon face: cube) face.solid(g2d);
     }
+	}// end paintComponent
 
-	}
-
-  public void print(double[] arr){
-    for(double val: arr)System.out.print(val+" ");
-    System.out.println();
-  }
-
+  // for other classes to call repaint
   public void update(){
     repaint();
-  }
+  }// end update
 
 }// Canvas

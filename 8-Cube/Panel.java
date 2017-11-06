@@ -39,6 +39,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
     initPanelArbAxis(panelArbAxis);
     JLabel arbLabel = new JLabel("CLICK on the button to set axis");
     JButton chooseArbAxis = new JButton("ROTATE AROUND THIS AXIS");
+    initArbButton(chooseArbAxis);
     JComponent[] arbComponents = {panelArbAxis,chooseArbAxis,arbLabel};
     for(JComponent c: arbComponents) c.setVisible(false);
 
@@ -49,8 +50,9 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 			functionsChooser.addActionListener (new ActionListener () {
 					public void actionPerformed(ActionEvent e) {
 						String chosenAxis = (String)functionsChooser.getSelectedItem();
-						myCanvas.state.put("axis",chosenAxis);
+						myCanvas.state.put("axis",chosenAxis); // update state
 						degreeSlider.setValue(0);
+            // update arb-axis components visibilities
 						if(chosenAxis != axes[axes.length-1]){
               myCanvas.update();
               for(JComponent c: arbComponents) c.setVisible(false);
@@ -73,24 +75,11 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
           }
       });
 
-
-
 		// create JPanel and add all the components to it
 		JPanel r = new JPanel();
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
 
-    // add l
-    chooseArbAxis.addActionListener(new ActionListener(){
-      public void actionPerformed(ActionEvent e){
-        myCanvas.state.put("arbX",Integer.valueOf(xField.getText()));
-        myCanvas.state.put("arbY",Integer.valueOf(yField.getText()));
-        myCanvas.state.put("arbZ",Integer.valueOf(zField.getText()));
-        System.out.println(xField.getText());
-        System.out.println(yField.getText());
-        System.out.println(myCanvas.state.get("arbZ"));
-      }
-    });
-
+    // add components to the parent JPanel
     for(JComponent component: new JComponent[]{rlabel0,renderChooser,rlabel1,functionsChooser,rlabel2,
 			degreeSlider,panelArbAxis,panelArbAxis,arbLabel,chooseArbAxis}) r.add(component);
 
@@ -132,6 +121,18 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		// render updates
 		myCanvas.update();
 	}//end stateChanged
+
+  public void initArbButton(JButton chooseArbAxis){
+    chooseArbAxis.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        // get values and update state
+        myCanvas.state.put("arbX",Integer.valueOf(xField.getText()));
+        myCanvas.state.put("arbY",Integer.valueOf(yField.getText()));
+        myCanvas.state.put("arbZ",Integer.valueOf(zField.getText()));
+        myCanvas.update();
+      }
+    });
+  }
 
 	// ActionListener method
 	public void actionPerformed(ActionEvent e) {
