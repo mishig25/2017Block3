@@ -35,6 +35,9 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		rlabel1 = new JLabel("Choose Axis:",center);
 		rlabel2 = new JLabel("Choose degree to rotate:",center);
 
+    JPanel panelArbAxis = new JPanel();
+    panelArbAxis.setVisible(false);
+
     // options for choosing different functions
     String[] axes = {"Z-axis","X-axis","Y-axis","Arbitrary-axis"};
 		JComboBox functionsChooser = new JComboBox(axes);
@@ -44,7 +47,12 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 						String chosenAxis = (String)functionsChooser.getSelectedItem();
 						myCanvas.state.put("axis",chosenAxis);
 						degreeSlider.setValue(0);
-						if(chosenAxis != axes[axes.length-1]) myCanvas.update();
+						if(chosenAxis != axes[axes.length-1]){
+              myCanvas.update();
+              panelArbAxis.setVisible(false);
+            }else{
+              panelArbAxis.setVisible(true);
+            }
 					}
 			});
 
@@ -74,21 +82,21 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 			degreeSlider}) r.add(component);
 
 
-    JPanel panel = new JPanel();
+
     JTextField xField = new JTextField("1", 3);
     JTextField yField = new JTextField("1", 3);
-    JTextField zField = new JTextField("1", 3);
+    JTextField zField = new JTextField("0", 3);
 
-		panel.setLayout(new GridLayout(1,6,1,1));
-    panel.add(new JLabel("X:",SwingConstants.CENTER));
-    panel.add(xField);
-    panel.add(new JLabel("X:",SwingConstants.CENTER));
-    panel.add(yField);
-    panel.add(new JLabel("X:",SwingConstants.CENTER));
-    panel.add(zField);
+		panelArbAxis.setLayout(new GridLayout(1,6,1,1));
+    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
+    panelArbAxis.add(xField);
+    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
+    panelArbAxis.add(yField);
+    panelArbAxis.add(new JLabel("X:",SwingConstants.CENTER));
+    panelArbAxis.add(zField);
 
-    JButton arbAxis = new JButton("ROTATE AROUND THIS AXIS");
-    arbAxis.addActionListener(new ActionListener(){
+    JButton chooseArbAxis = new JButton("ROTATE AROUND THIS AXIS");
+    chooseArbAxis.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e){
         myCanvas.state.put("arbX",Integer.valueOf(xField.getText()));
         myCanvas.state.put("arbY",Integer.valueOf(yField.getText()));
@@ -99,8 +107,8 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
       }
     });
 
-    r.add(panel);
-    r.add(arbAxis);
+    r.add(panelArbAxis);
+    r.add(chooseArbAxis);
 
 		add(r); // add the newly created JPanel to this class
 		// updateStateGUI(); // render updates

@@ -8,14 +8,12 @@ import java.awt.*;
 
 public class Cube{
 
-    //For this type of program, event handling determines the path of
-    //execution.  This main method "looks" like it sets up the frame
-    //and then stops.
-
+    // main method of Cube program
     public static void main(String[] args){
 
-		Canvas myCanvas = new Canvas();
+    // init windows
 		JFrame myFrame = new JFrame();
+    Canvas myCanvas = new Canvas();
     Panel sliders = new Panel(myCanvas);
 
 		myFrame.setTitle("3D Cube");
@@ -31,5 +29,5 @@ public class Cube{
 		myFrame.setResizable(true);
 		myFrame.setVisible(true);
 
-  }
-} // BasicDraw
+  }// end main
+} // Cube
