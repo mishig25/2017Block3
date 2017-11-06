@@ -1,12 +1,12 @@
 
 /**
- * Pythagor.java.
+ * Cube.java.
  */
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Pythagor{
+public class Cube{
 
     //For this type of program, event handling determines the path of
     //execution.  This main method "looks" like it sets up the frame

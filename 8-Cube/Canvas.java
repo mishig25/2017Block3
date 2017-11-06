@@ -43,8 +43,15 @@ class Polygon implements Comparable<Polygon>{
     Path2D.Double wireFace = null;
     for(int i=0;i<5;i++){
       double[] vert = verticesTransformed.get(i%4);
-          int s = 20;
-          double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+      int s = 20;
+      double x = vert[0]*s, y=vert[1]*s, z=vert[2]*s;
+
+      // perspective test
+      double e = 200;
+      x = x/(1-z/e);
+      y = y/(1-z/e);
+
+
       if(wireFace == null){
         wireFace = new Path2D.Double();
         wireFace.moveTo(x,y);
@@ -72,7 +79,8 @@ class Polygon implements Comparable<Polygon>{
   public double[] rotateVert(double[] vert, String axis, int deg){
     if(axis=="Z-axis") return rotateZ(vert,deg);
     if(axis=="Y-axis") return rotateY(vert,deg);
-    return rotateX(vert,deg);
+    if(axis=="X-axis") return rotateX(vert,deg);
+    return rotateArb(vert,deg);
   }
   //  rotate method
   public double[] rotateZ(double[] vert, int deg){
@@ -119,6 +127,33 @@ class Polygon implements Comparable<Polygon>{
 
     return vertT;
   }
+
+  public double[] rotateArb(double[] vert, int deg){
+    // normalize arb
+    double[] arb = {1,1,0};
+    double[] arbN = new double[3];
+    double len = Math.sqrt(Math.pow(arb[0],2)+Math.pow(arb[1],2)+Math.pow(arb[2],2));
+    for(int i=0;i<arbN.length;i++) arbN[i] = arb[i]/len;
+
+    // arount arb-axis
+    double rad = Math.toRadians(deg);
+    double c = Math.cos(rad);
+    double s = Math.sin(rad);
+    double x = arbN[0], y = arbN[1], z = arbN[2];
+
+
+    double[] M1 = {(c+(1-c)*Math.pow(x,2)),((1-c)*x*y-s*z),((1-c)*x*z+s*y)};
+    double[] M2 = {((1-c)*x*y+s*z),(c+(1-c)*Math.pow(y,2)),((1-c)*y*z-s*x)};
+    double[] M3 = {((1-c)*x*z-s*y),((1-c)*y*z+s*x),(c+(1-c)*Math.pow(z,2))};
+
+    double[] vertT = new double[3];
+    for(int i=0; i<3; i++) vertT[0] += (M1[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[1] += (M2[i]*vert[i]);
+    for(int i=0; i<3; i++) vertT[2] += (M3[i]*vert[i]);
+
+    return vertT;
+  }
+
 }// end Polygon
 
 public class Canvas extends JPanel{
@@ -178,11 +213,10 @@ public class Canvas extends JPanel{
 
     // plot points
 
-    System.out.println((String)state.get("axis")+" "+(Integer)state.get("degree"));
-
     String axis = (String)state.get("axis");
     int deg = (Integer)state.get("degree");
     String renderMode = (String)state.get("renderMode");
+    System.out.println(renderMode+" "+axis+" "+deg);
 
     for(Polygon face: cube){
       face.rotate(axis,deg);

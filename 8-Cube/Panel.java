@@ -30,12 +30,13 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		degreeSlider.setMinorTickSpacing(5);
 
 		// initialize labels
-    rlabel0 = new JLabel("Choose Render Mode:");
-		rlabel1 = new JLabel("Choose Axis:");
-		rlabel2 = new JLabel("Choose degree to rotate:");
+    int center = SwingConstants.CENTER;
+    rlabel0 = new JLabel("Choose Render Mode:",center);
+		rlabel1 = new JLabel("Choose Axis:",center);
+		rlabel2 = new JLabel("Choose degree to rotate:",center);
 
     // options for choosing different functions
-    String[] axes = {"Z-axis","X-axis","Y-axis"};
+    String[] axes = {"Z-axis","X-axis","Y-axis","Arbitrary-axis"};
 		JComboBox functionsChooser = new JComboBox(axes);
 			// add ActionListener to JComboBox
 			functionsChooser.addActionListener (new ActionListener () {
@@ -43,7 +44,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 						String chosenAxis = (String)functionsChooser.getSelectedItem();
 						myCanvas.state.put("axis",chosenAxis);
 						degreeSlider.setValue(0);
-						myCanvas.update();
+						if(chosenAxis != axes[axes.length-1]) myCanvas.update();
 					}
 			});
 
@@ -53,7 +54,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
     // add ActionListener to JComboBox
     renderChooser.addActionListener (new ActionListener () {
           public void actionPerformed(ActionEvent e) {
-            String chosenAxis = (String)functionsChooser.getSelectedItem();
+            String chosenAxis = (String)renderChooser.getSelectedItem();
             myCanvas.state.put("renderMode",chosenAxis);
             myCanvas.update();
           }
@@ -71,6 +72,35 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
 		for(JComponent component: new JComponent[]{rlabel0,renderChooser,rlabel1,functionsChooser,rlabel2,
 			degreeSlider}) r.add(component);
+
+
+    JPanel panel = new JPanel();
+    JTextField xField = new JTextField("1", 3);
+    JTextField yField = new JTextField("1", 3);
+    JTextField zField = new JTextField("1", 3);
+
+		panel.setLayout(new GridLayout(1,6,1,1));
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(xField);
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(yField);
+    panel.add(new JLabel("X:",SwingConstants.CENTER));
+    panel.add(zField);
+
+    JButton arbAxis = new JButton("ROTATE AROUND THIS AXIS");
+    arbAxis.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e){
+        myCanvas.state.put("arbX",Integer.valueOf(xField.getText()));
+        myCanvas.state.put("arbY",Integer.valueOf(yField.getText()));
+        myCanvas.state.put("arbZ",Integer.valueOf(zField.getText()));
+        System.out.println(xField.getText());
+        System.out.println(yField.getText());
+        System.out.println(myCanvas.state.get("arbZ"));
+      }
+    });
+
+    r.add(panel);
+    r.add(arbAxis);
 
 		add(r); // add the newly created JPanel to this class
 		// updateStateGUI(); // render updates
