@@ -15,3 +15,4 @@ Introduction to the algorithms and theory necessary for producing graphic images
 5. [Face Construction](https://github.com/mishig25/2017Block3/tree/master/5-Face)
 6. [Free Hand Draw](https://github.com/mishig25/2017Block3/tree/master/6-FreeHandDraw)
 7. [Polar Coord](https://github.com/mishig25/2017Block3/tree/master/7-Polar)
+8. [3D Cube](https://github.com/mishig25/2017Block3/tree/master/8-Cube)

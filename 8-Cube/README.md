@@ -1,14 +1,14 @@
-## Pythagorean Triangle
+## 3D Cube
 Description:
 
-Draw three rectangles that form a pythagorean triangle inside them. Change shape colors on click.
+Rotates 3D Cube in any axis.
 
 Demo:
 
-![Alt Text](http://g.recordit.co/X0GpO8rNJM.gif)
+![Alt Text](http://g.recordit.co/Ila3U9b0o7.gif)
 
 To run:
 ```
-javac Pythagor.java
-java Pythagor
+javac Cube.java
+java Cube
 ```

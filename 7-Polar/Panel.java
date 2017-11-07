@@ -35,7 +35,7 @@ class Panel extends JPanel implements ChangeListener, ActionListener{
 		rlabel3 = new JLabel("Choose constant a:");
 
     // options for choosing different functions
-		JComboBox functionsChooser = new JComboBox(myCanvas.functionNames);
+		JComboBox functionsChooser = new JComboBox(["Z-axis,X-axis,Y-axis"]);
 			// add ActionListener to JComboBox
 			functionsChooser.addActionListener (new ActionListener () {
 					public void actionPerformed(ActionEvent e) {
