@@ -1,6 +1,6 @@
 
 /**
- * SimpleCanvas.java
+ * Canvas.java
  *
  * Draws Three Rectangles to Form Pythagorean Triangle.
  *
@@ -12,14 +12,22 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
 
-public class SimpleCanvas extends JPanel{
+public class Canvas extends JPanel{
 
-  public SimpleCanvas (){
+  HashMap state;
+
+  double[] pLight; // light position
+  double[] pCamera; // camera/eye position
+
+  public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(300,300));
 		setBackground(Color.lightGray);
 
-
+    pLight = new double[]{0,0,250};
+    pCamera = new double[]{0,0,200};
+    state = new HashMap();
+    state.put("cameraX",0);
   }
 
   public void paintComponent(Graphics g){
@@ -28,14 +36,14 @@ public class SimpleCanvas extends JPanel{
 		Graphics2D g2d = (Graphics2D)g; //cast so we can use JAVA2D.
     // transformation on the entire set
 		g2d.translate(getWidth()/2,getHeight()/2);
+
+    pLight[0] = (double)(int)state.get("cameraX");
     calcPoints(g2d);
 	}
 
   public void calcPoints(Graphics2D g2d){
 
     double r = 100; // radius
-    double[] pLight = {0,0,250}; // light position
-    double[] pCamera = {0,0,200}; // camera/eye position
 
     double max = -1, min = 100;
     // calculate y points
@@ -96,4 +104,8 @@ public class SimpleCanvas extends JPanel{
     return (int)newvalue;
   }
 
-}// SimpleCanvas
+  public void update(){
+    repaint();
+  }
+
+}// Canvas
