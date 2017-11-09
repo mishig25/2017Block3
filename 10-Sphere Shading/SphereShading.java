@@ -1,6 +1,5 @@
-
 /**
- * Pythagor.java.
+ * SphereShading.java.
  */
 
 import javax.swing.*;
@@ -8,9 +7,7 @@ import java.awt.*;
 
 public class SphereShading{
 
-    //For this type of program, event handling determines the path of
-    //execution.  This main method "looks" like it sets up the frame
-    //and then stops.
+    // main method of SphereShading program
 
     public static void main(String[] args){
 
@@ -29,8 +26,8 @@ public class SphereShading{
     myFrame.add(sliders,BorderLayout.EAST);
 		myFrame.add(myCanvas,BorderLayout.CENTER);
 		myFrame.pack(); //resizes to preferred size for components.
-		myFrame.setResizable(true);
+		myFrame.setResizable(false);
 		myFrame.setVisible(true);
 
   }
-} // BasicDraw
+} // SphereShading

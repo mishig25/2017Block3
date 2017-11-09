@@ -24,11 +24,11 @@ class Panel extends JPanel implements ChangeListener{
 		myCanvas = _myCanvas;
 		setLayout(new GridLayout(1,3,30,10));
 
-		// initialize slider for changing scale value
+		// initialize slider for changing X value
     xSlider = new JSlider(JSlider.HORIZONTAL,-200,200,0);
     initSlider(xSlider);
 
-		// initialize labels
+		// initialize label
     rlabel0 = new JLabel("Move Light Source along X-axis");
 
 		// create JPanel and add all the components to it
@@ -42,7 +42,7 @@ class Panel extends JPanel implements ChangeListener{
 
   }//end contructor
 
-  // initialize degree slider
+  // initialize X value slider
   public void initSlider(JSlider slider){
     slider.setMajorTickSpacing(60);
     slider.setMinorTickSpacing(5);
@@ -51,7 +51,7 @@ class Panel extends JPanel implements ChangeListener{
     slider.addChangeListener(this);
   }// end initSlider
 
-	// listen for changes in values of degree slider
+	// listen for changes in value of xSlider
   public void stateChanged(ChangeEvent ev){
     // get scale value
 		int xVal = xSlider.getValue();
