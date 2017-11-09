@@ -17,4 +17,4 @@ Introduction to the algorithms and theory necessary for producing graphic images
 7. [Polar Coord](https://github.com/mishig25/2017Block3/tree/master/7-Polar)
 8. [3D Cube](https://github.com/mishig25/2017Block3/tree/master/8-Cube)
 9. [ImageIO Example](https://github.com/mishig25/2017Block3/tree/master/9-Image)
-10. [3D Sphere Shading](https://github.com/mishig25/2017Block3/tree/master/10-Sphere Shading)
+10. [3D Sphere Shading](https://github.com/mishig25/2017Block3/tree/master/10-SphereShading)
