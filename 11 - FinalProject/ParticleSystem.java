@@ -4,6 +4,7 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ParticleSystem{
 
@@ -12,8 +13,9 @@ public class ParticleSystem{
     //and then stops.
 
     public static void main(String[] args){
-		SimpleCanvas myCanvas = new SimpleCanvas();
-		JFrame myFrame = new JFrame();
+    JFrame myFrame = new JFrame();
+		Canvas myCanvas = new Canvas();
+    Panel sliders = new Panel(myCanvas);
 		myFrame.setTitle("Particle System");
 		myFrame.setSize(600,600);
 
@@ -21,9 +23,10 @@ public class ParticleSystem{
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Must use getContentPane() with JFrame.
-		myFrame.add(myCanvas);
+    myFrame.add(sliders,BorderLayout.EAST);
+		myFrame.add(myCanvas,BorderLayout.CENTER);
 		myFrame.pack(); //resizes to preferred size for components.
-		myFrame.setResizable(true);
+		myFrame.setResizable(false);
 		myFrame.setVisible(true);
 
   }

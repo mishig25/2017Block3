@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashMap;
 
 class Particle{
 
@@ -27,12 +28,9 @@ class Particle{
     shape = new Ellipse2D.Double(x,y,size,size);
     color = Color.white;
     // generate vector
-    double xD = ran.nextInt(11) - 5;
-    double yD = ran.nextInt(11) - 5;
-    yD = 20;
-    // scaling factor
-    double s = 100;
-    // xD /= s; yD /= s;
+    double speed = 5.0;
+    double xD = ranDouble(-speed,speed);
+    double yD = ranDouble(-speed,speed);
     direction = new double[]{xD,yD};
 
   }
@@ -41,14 +39,18 @@ class Particle{
     g2d.fill(shape);
   }
   public void update(){
-    double r1 = ran.nextInt(5) - 2;
-    double r2 = ran.nextInt(5) - 2;
+    double r1 = ranDouble(-1.0,1.0);
+    double r2 = ranDouble(-1.0,1.0);
     direction[0] += r1;
     direction[1] += r2;
     x += direction[0];
     y += direction[1];
     size -= .2;
     shape.setFrame(x,y,size,size);
+  }
+  private double ranDouble(double min,double max){
+    double val = min + (max - min) * ran.nextDouble();
+    return val;
   }
 }
 
@@ -83,16 +85,19 @@ class Emitter{
   }
 }
 
-public class SimpleCanvas extends JPanel{
+public class Canvas extends JPanel{
 
   Emitter em;
+  HashMap state;
 
-  public SimpleCanvas (){
+  public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(600,600));
 		setBackground(Color.black);
 
     em = new Emitter();
+    state = new HashMap();
+
     Timer timer = new Timer(1000/24, new ActionListener(){
         public void actionPerformed(ActionEvent evt){ repaint(); }
     });
@@ -111,4 +116,4 @@ public class SimpleCanvas extends JPanel{
     em.update(g2d);
 	}
 
-}// SimpleCanvas
+}// Canvas
