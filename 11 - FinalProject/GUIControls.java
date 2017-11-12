@@ -41,8 +41,8 @@ class GUIControls extends JPanel implements ChangeListener{
     // init buttons
     color1 = new JButton("Choose Color1");
     color2 = new JButton("Choose Color2");
-    initColorButton(color1);
-    initColorButton(color2);
+    initColorButton(color1,"color1");
+    initColorButton(color2,"color2");
 
 		// create JPanel and add all the components to it
 		JPanel r = new JPanel();
@@ -77,8 +77,8 @@ class GUIControls extends JPanel implements ChangeListener{
     myCanvas.state.put("yforce",(double)yVal);
 	}//end stateChanged
 
-  public void initColorButton(JButton button){
-    button.addActionListener(new ButtonListener(button));
+  public void initColorButton(JButton button,String label){
+    button.addActionListener(new ButtonListener(button,myCanvas.state,label));
     button.setBackground(Color.white);
     button.setOpaque(true);
     button.setBorderPainted(false);
@@ -86,12 +86,19 @@ class GUIControls extends JPanel implements ChangeListener{
 
   private class ButtonListener implements ActionListener {
     JButton button;
-    public ButtonListener(JButton _button){
+    HashMap state;
+    String label;
+    public ButtonListener(JButton _button,HashMap _state,String _label){
       button = _button;
+      state = _state;
+      label = _label;
     }
     public void actionPerformed(ActionEvent e) {
       Color color = JColorChooser.showDialog(null, "Choose a Color", button.getBackground());
-      if (color != null) button.setBackground(color);
+      if (color != null){
+        button.setBackground(color);
+        state.put(label,color);
+      }
     }
 }
 

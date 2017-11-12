@@ -108,6 +108,8 @@ public class Canvas extends JPanel{
     state.put("speed",5.0);
     state.put("xforce",0.0);
     state.put("yforce",0.0);
+    state.put("color1",Color.white);
+    state.put("color2",Color.white);
 
     em = new Emitter(state);
 
