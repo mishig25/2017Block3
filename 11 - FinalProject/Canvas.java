@@ -22,25 +22,27 @@ class Particle{
   double x=0,y=0;
   double size = 8.0;
   Random ran;
+  double speed;
 
-  public Particle(Random _ran){
+  public Particle(Random _ran, double _speed){
     ran = _ran;
     shape = new Ellipse2D.Double(x,y,size,size);
     color = Color.white;
     // generate vector
-    double speed = 5.0;
+    double speed = _speed;
     double xD = ranDouble(-speed,speed);
     double yD = ranDouble(-speed,speed);
     direction = new double[]{xD,yD};
 
   }
+
   public void draw(Graphics2D g2d){
     g2d.setColor(color);
     g2d.fill(shape);
   }
   public void update(){
-    double r1 = ranDouble(-1.0,1.0);
-    double r2 = ranDouble(-1.0,1.0);
+    double r1 = ranDouble(-.5,.5);
+    double r2 = ranDouble(-.5,.5);
     direction[0] += r1;
     direction[1] += r2;
     x += direction[0];
@@ -58,14 +60,17 @@ class Emitter{
 
   ArrayList<Particle> particles;
   Random ran;
+  HashMap state;
 
-  public Emitter(){
+  public Emitter(HashMap _state){
     ran = new Random();
     particles = new ArrayList();
+    state = _state;
   }
   public void emit(int n){
+    double speed = (double)state.get("speed");
     for(int i=0; i<n; i++){
-      Particle particle = new Particle(ran);
+      Particle particle = new Particle(ran,speed);
       particles.add(particle);
     }
   }
@@ -95,8 +100,12 @@ public class Canvas extends JPanel{
 		setPreferredSize(new Dimension(600,600));
 		setBackground(Color.black);
 
-    em = new Emitter();
     state = new HashMap();
+    state.put("speed",5.0);
+    state.put("xforce",0.0);
+    state.put("yforce",0.0);
+
+    em = new Emitter(state);
 
     Timer timer = new Timer(1000/24, new ActionListener(){
         public void actionPerformed(ActionEvent evt){ repaint(); }

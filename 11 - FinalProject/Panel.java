@@ -25,7 +25,7 @@ class Panel extends JPanel implements ChangeListener{
 		setLayout(new GridLayout(1,3,30,10));
 
 		// initialize slider for changing X value
-    sSlider = new JSlider(JSlider.HORIZONTAL, 0,50,0);
+    sSlider = new JSlider(JSlider.HORIZONTAL, 0,50,5);
     xSlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
     ySlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
     JSlider[] sliders = {sSlider,xSlider,ySlider};
@@ -65,9 +65,9 @@ class Panel extends JPanel implements ChangeListener{
     int yVal = ySlider.getValue();
     int sVal = sSlider.getValue();
 		// update state
-		myCanvas.state.put("speed",sVal);
-    myCanvas.state.put("xforce",xVal);
-    myCanvas.state.put("yforce",yVal);
+		myCanvas.state.put("speed",(double)sVal);
+    myCanvas.state.put("xforce",(double)xVal);
+    myCanvas.state.put("yforce",(double)yVal);
 	}//end stateChanged
 
 }// Panel
