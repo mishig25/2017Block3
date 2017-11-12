@@ -25,9 +25,9 @@ class Panel extends JPanel implements ChangeListener{
 		setLayout(new GridLayout(1,3,30,10));
 
 		// initialize slider for changing X value
-    sSlider = new JSlider(JSlider.HORIZONTAL, 0,200,0);
-    xSlider = new JSlider(JSlider.HORIZONTAL,-200,200,0);
-    ySlider = new JSlider(JSlider.HORIZONTAL,-200,200,0);
+    sSlider = new JSlider(JSlider.HORIZONTAL, 0,50,0);
+    xSlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
+    ySlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
     JSlider[] sliders = {sSlider,xSlider,ySlider};
     for(JSlider s: sliders) initSlider(s);
 
@@ -51,7 +51,7 @@ class Panel extends JPanel implements ChangeListener{
 
   // initialize sliders
   public void initSlider(JSlider slider){
-    slider.setMajorTickSpacing(60);
+    slider.setMajorTickSpacing(25);
     slider.setMinorTickSpacing(5);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
@@ -60,10 +60,14 @@ class Panel extends JPanel implements ChangeListener{
 
 	// listen for changes in value of xSlider
   public void stateChanged(ChangeEvent ev){
-    // get scale value
+    // get slider values
 		int xVal = xSlider.getValue();
+    int yVal = ySlider.getValue();
+    int sVal = sSlider.getValue();
 		// update state
-		myCanvas.state.put("cameraX",xVal);
+		myCanvas.state.put("speed",sVal);
+    myCanvas.state.put("xforce",xVal);
+    myCanvas.state.put("yforce",yVal);
 	}//end stateChanged
 
 }// Panel
