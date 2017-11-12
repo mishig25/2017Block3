@@ -40,11 +40,13 @@ class Particle{
     g2d.setColor(color);
     g2d.fill(shape);
   }
-  public void update(){
-    double r1 = ranDouble(-.5,.5);
-    double r2 = ranDouble(-.5,.5);
+  public void update(double xforce, double yforce){
+    double r1 = ranDouble(-.2,.2);
+    double r2 = ranDouble(-.2,.2);
     direction[0] += r1;
     direction[1] += r2;
+    direction[0] += xforce;
+    direction[1] += yforce;
     x += direction[0];
     y += direction[1];
     size -= .2;
@@ -75,8 +77,10 @@ class Emitter{
     }
   }
   public void update(Graphics2D g2d){
+    double xforce = (double)state.get("xforce");
+    double yforce = (double)state.get("yforce");
     for(Particle part: particles){
-      part.update();
+      part.update(xforce, yforce);
       part.draw(g2d);
     }
   }

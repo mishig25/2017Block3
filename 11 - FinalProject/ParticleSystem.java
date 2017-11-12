@@ -15,7 +15,7 @@ public class ParticleSystem{
     public static void main(String[] args){
     JFrame myFrame = new JFrame();
 		Canvas myCanvas = new Canvas();
-    Panel sliders = new Panel(myCanvas);
+    GUIControls sliders = new GUIControls(myCanvas);
 		myFrame.setTitle("Particle System");
 		myFrame.setSize(600,600);
 

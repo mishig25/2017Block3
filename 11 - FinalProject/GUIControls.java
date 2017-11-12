@@ -9,17 +9,18 @@
  import java.util.*;
  import java.awt.event.*;
 
-class Panel extends JPanel implements ChangeListener{
+class GUIControls extends JPanel implements ChangeListener{
 
   // instance vars
 	JSlider sSlider,ySlider,xSlider; // slider for moving light source
 	JLabel rlabel0,rlabel1,rlabel2,rlabel3; // label
+  JButton color1,color2;
 
 	// current instance of canvas so that
 	// we can tell canvas to update on user input
 	Canvas myCanvas;
 
- 	public Panel(Canvas _myCanvas){
+ 	public GUIControls(Canvas _myCanvas){
 
 		myCanvas = _myCanvas;
 		setLayout(new GridLayout(1,3,30,10));
@@ -37,13 +38,19 @@ class Panel extends JPanel implements ChangeListener{
     rlabel2 = new JLabel("Force X:");
     rlabel3 = new JLabel("Force Y:");
 
+    // init buttons
+    color1 = new JButton("Choose Color1");
+    color2 = new JButton("Choose Color2");
+    initColorButton(color1);
+    initColorButton(color2);
+
 		// create JPanel and add all the components to it
 		JPanel r = new JPanel();
 		r.setLayout(new BoxLayout(r, BoxLayout.Y_AXIS));
 
     // add components to the parent JPanel
     for(JComponent component: new JComponent[]{rlabel0,rlabel1,sSlider,rlabel2,xSlider,
-      rlabel3,ySlider}) r.add(component);
+      rlabel3,ySlider,color1,color2}) r.add(component);
 
 		add(r); // add the newly created JPanel to this class
 
@@ -69,5 +76,23 @@ class Panel extends JPanel implements ChangeListener{
     myCanvas.state.put("xforce",(double)xVal);
     myCanvas.state.put("yforce",(double)yVal);
 	}//end stateChanged
+
+  public void initColorButton(JButton button){
+    button.addActionListener(new ButtonListener(button));
+    button.setBackground(Color.white);
+    button.setOpaque(true);
+    button.setBorderPainted(false);
+  }
+
+  private class ButtonListener implements ActionListener {
+    JButton button;
+    public ButtonListener(JButton _button){
+      button = _button;
+    }
+    public void actionPerformed(ActionEvent e) {
+      Color color = JColorChooser.showDialog(null, "Choose a Color", button.getBackground());
+      if (color != null) button.setBackground(color);
+    }
+}
 
 }// Panel
