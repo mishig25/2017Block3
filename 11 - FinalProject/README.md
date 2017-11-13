@@ -1,7 +1,7 @@
-## Pythagorean Triangle
+## Final Project
 Description:
 
-Draw three rectangles that form a pythagorean triangle inside them. Change shape colors on click.
+A particle system that allows user to control its force and colors.
 
 Demo:
 
@@ -9,6 +9,6 @@ Demo:
 
 To run:
 ```
-javac Pythagor.java
-java Pythagor
+javac ParticleSystem.java
+java ParticleSystem
 ```

@@ -68,13 +68,15 @@ class GUIControls extends JPanel implements ChangeListener{
 	// listen for changes in value of xSlider
   public void stateChanged(ChangeEvent ev){
     // get slider values
-		int xVal = xSlider.getValue();
-    int yVal = ySlider.getValue();
-    int sVal = sSlider.getValue();
+		double xVal = xSlider.getValue();
+    double yVal = ySlider.getValue();
+    double sVal = sSlider.getValue();
+    xVal /= 10.0;
+    yVal /= -10.0;
 		// update state
-		myCanvas.state.put("speed",(double)sVal);
-    myCanvas.state.put("xforce",(double)xVal);
-    myCanvas.state.put("yforce",(double)yVal);
+		myCanvas.state.put("speed",sVal);
+    myCanvas.state.put("xforce",xVal);
+    myCanvas.state.put("yforce",yVal);
 	}//end stateChanged
 
   public void initColorButton(JButton button,String label){
