@@ -38,7 +38,7 @@ class GUIControls extends JPanel implements ChangeListener{
 
 		// initialize labels
     rlabel0 = new JLabel("PARTICLE SYSTEM");
-    rlabel1 = new JLabel("Speed:");
+    rlabel1 = new JLabel("Particle Velocity:");
     rlabel2 = new JLabel("Force X:");
     rlabel3 = new JLabel("Force Y:");
     rlabel4 = new JLabel("Emit Frequency:");

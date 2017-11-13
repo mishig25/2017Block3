@@ -30,8 +30,10 @@ public class Emitter{
     double speed = (double)state.get("speed");
     Color color1 = (Color)state.get("color1");
     Color color2 = (Color)state.get("color2");
+    int x = (int)state.get("x");
+    int y = (int)state.get("y");
     for(int i=0; i<n; i++){
-      Particle particle = new Particle(ran,speed,color1,color2,emtype);
+      Particle particle = new Particle(x,y,ran,speed,color1,color2,emtype);
       particles.add(particle);
     }
   }

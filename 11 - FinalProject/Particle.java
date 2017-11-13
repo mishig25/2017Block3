@@ -18,14 +18,16 @@ public class Particle{
   Ellipse2D.Double shape;
   Color color1,color2;
   double[] direction;
-  double x=0,y=0;
+  double x,y;
   double size = 8.0;
   Random ran;
   double speed;
 
-  public Particle(Random _ran, double _speed, Color _color1,Color _color2,String emtype){
+  public Particle(double _x, double _y, Random _ran, double _speed, Color _color1,Color _color2,String emtype){
+    x = _x;
+    y = _y;
     ran = _ran;
-    if(emtype == "Plane") x = ranDouble(-200.0,200.0);
+    if(emtype == "Plane") x = ranDouble(x-200.0,x+200.0);
     shape = new Ellipse2D.Double(x,y,size,size);
     // generate vector
     double speed = _speed;

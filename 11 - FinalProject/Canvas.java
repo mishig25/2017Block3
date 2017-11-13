@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.HashMap;
 
-public class Canvas extends JPanel{
+public class Canvas extends JPanel implements MouseListener{
 
   Emitter em;
   HashMap state;
@@ -22,6 +22,7 @@ public class Canvas extends JPanel{
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(600,600));
 		setBackground(Color.black);
+    addMouseListener(this);
 
     state = new HashMap();
     initState();
@@ -42,6 +43,8 @@ public class Canvas extends JPanel{
     state.put("color2",Color.white);
     state.put("emfr",50);
     state.put("emtype","Point");
+    state.put("x",0);
+    state.put("y",0);
   }
 
   public void paintComponent(Graphics g){
@@ -55,5 +58,21 @@ public class Canvas extends JPanel{
     em.removeSmallParticles();
     em.update(g2d);
 	}
+
+  public void mouseClicked(MouseEvent e){
+    int y = e.getY()-getHeight()/2;
+    int x = e.getX()-getWidth()/2;
+    state.put("x",x);
+    state.put("y",y);
+  }
+
+   //Empty methods to satisfy MouseListener interface
+  public void mouseEntered(MouseEvent e){}
+
+  public void mouseExited(MouseEvent e){}
+
+  public void mousePressed(MouseEvent e){}
+
+  public void mouseReleased(MouseEvent e){}
 
 }// Canvas
