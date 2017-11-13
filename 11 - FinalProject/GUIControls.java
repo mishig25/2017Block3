@@ -63,6 +63,10 @@ class GUIControls extends JPanel implements ChangeListener{
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
     slider.addChangeListener(this);
+    Hashtable sliderLabels = new Hashtable();
+    for(int i=-50; i<=50; i+= 25)sliderLabels.put( new Integer(i),
+      new JLabel(String.format("%.1f",(float)i/10)));
+    slider.setLabelTable(sliderLabels);
   }// end initSlider
 
 	// listen for changes in value of xSlider
