@@ -13,16 +13,18 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.HashMap;
 
-public class Canvas extends JPanel implements MouseListener{
+public class Canvas extends JPanel implements MouseListener,MouseMotionListener{
 
   Emitter em;
   HashMap state;
+  boolean mouseClick = false;
 
   public Canvas (){
 		//The following is another way to guarantee correct size.
 		setPreferredSize(new Dimension(600,600));
 		setBackground(Color.black);
     addMouseListener(this);
+    addMouseMotionListener(this);
 
     state = new HashMap();
     initState();
@@ -59,20 +61,22 @@ public class Canvas extends JPanel implements MouseListener{
     em.update(g2d);
 	}
 
-  public void mouseClicked(MouseEvent e){
-    int y = e.getY()-getHeight()/2;
-    int x = e.getX()-getWidth()/2;
-    state.put("x",x);
-    state.put("y",y);
+  //Methods to satisfy MouseListener interface
+  public void mousePressed(MouseEvent e){ mouseClick = true; }
+  public void mouseReleased(MouseEvent e){ mouseClick = false;}
+
+  public void mouseDragged(MouseEvent e){
+    if(mouseClick){
+      int y = e.getY()-getHeight()/2;
+      int x = e.getX()-getWidth()/2;
+      state.put("x",x);
+      state.put("y",y);
+    }
   }
 
-   //Empty methods to satisfy MouseListener interface
   public void mouseEntered(MouseEvent e){}
-
   public void mouseExited(MouseEvent e){}
-
-  public void mousePressed(MouseEvent e){}
-
-  public void mouseReleased(MouseEvent e){}
+  public void mouseMoved(MouseEvent e){}
+  public void mouseClicked(MouseEvent e){}
 
 }// Canvas
