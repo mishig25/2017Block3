@@ -24,12 +24,14 @@ public class Emitter{
     particles = new ArrayList();
     state = _state;
   }
-  public void emit(int n){
+  public void emit(){
+    int n = (Integer)state.get("emfr");
+    String emtype = (String)state.get("emtype");
     double speed = (double)state.get("speed");
     Color color1 = (Color)state.get("color1");
     Color color2 = (Color)state.get("color2");
     for(int i=0; i<n; i++){
-      Particle particle = new Particle(ran,speed,color1,color2);
+      Particle particle = new Particle(ran,speed,color1,color2,emtype);
       particles.add(particle);
     }
   }

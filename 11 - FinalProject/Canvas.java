@@ -40,6 +40,8 @@ public class Canvas extends JPanel{
     state.put("yforce",0.0);
     state.put("color1",Color.white);
     state.put("color2",Color.white);
+    state.put("emfr",50);
+    state.put("emtype","Point");
   }
 
   public void paintComponent(Graphics g){
@@ -49,7 +51,7 @@ public class Canvas extends JPanel{
     // transformation on the entire set
 		g2d.translate(getWidth()/2,getHeight()/2);
 
-    em.emit(100);
+    em.emit();
     em.removeSmallParticles();
     em.update(g2d);
 	}

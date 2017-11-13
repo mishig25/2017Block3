@@ -23,8 +23,9 @@ public class Particle{
   Random ran;
   double speed;
 
-  public Particle(Random _ran, double _speed, Color _color1,Color _color2){
+  public Particle(Random _ran, double _speed, Color _color1,Color _color2,String emtype){
     ran = _ran;
+    if(emtype == "Plane") x = ranDouble(-200.0,200.0);
     shape = new Ellipse2D.Double(x,y,size,size);
     // generate vector
     double speed = _speed;
