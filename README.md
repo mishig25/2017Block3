@@ -14,7 +14,7 @@ More interesting projects compared to other ones
 * [3D Cube](https://github.com/mishig25/2017Block3/tree/master/8-Cube)
 * [3D Sphere Shading](https://github.com/mishig25/2017Block3/tree/master/10-SphereShading)
 * [Particle System](https://github.com/mishig25/2017Block3/tree/master/11-FinalProject)
-#### Content:
+#### Content/All Projects:
 1. [Pythagorean Triangle](https://github.com/mishig25/2017Block3/tree/master/1-Pythagorus)
 2. [Color Test](https://github.com/mishig25/2017Block3/tree/master/2-ColorTest)
 3. [Gradient Triangles](https://github.com/mishig25/2017Block3/tree/master/3-ShadedTriangles)
