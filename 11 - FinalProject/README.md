@@ -5,7 +5,7 @@ A particle system that allows user to control its force and colors.
 
 Demo:
 
-![Alt Text](http://g.recordit.co/X0GpO8rNJM.gif)
+![Alt Text](http://g.recordit.co/7TBRLewI0K.gif)
 
 To run:
 ```
