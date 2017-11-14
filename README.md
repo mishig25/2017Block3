@@ -7,6 +7,13 @@ Introduction to the algorithms and theory necessary for producing graphic images
 * [Mathematical Structures for Computer Graphics by Steven Janke](https://www.amazon.com/Mathematical-Structures-Computer-Graphics-Steven/dp/1118712196)
 #### Language:
 * Java and Java 2D Graphics
+#### Highlights:
+More interesting projects compared to other ones
+* [Spiraling Squares](https://github.com/mishig25/2017Block3/tree/master/4-Spiral)
+* [Free Hand Draw](https://github.com/mishig25/2017Block3/tree/master/6-FreeHandDraw)
+* [3D Cube](https://github.com/mishig25/2017Block3/tree/master/8-Cube)
+* [3D Sphere Shading](https://github.com/mishig25/2017Block3/tree/master/10-SphereShading)
+* [Particle System](https://github.com/mishig25/2017Block3/tree/master/11-FinalProject)
 #### Content:
 1. [Pythagorean Triangle](https://github.com/mishig25/2017Block3/tree/master/1-Pythagorus)
 2. [Color Test](https://github.com/mishig25/2017Block3/tree/master/2-ColorTest)
