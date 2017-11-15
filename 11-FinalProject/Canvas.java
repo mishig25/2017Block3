@@ -1,7 +1,7 @@
 /**
- * SimpleCanvas.java
+ * Canvas.java
  *
- * Draws Three Rectangles to Form Pythagorean Triangle.
+ * Draws Particles.
  *
  */
 
@@ -14,9 +14,9 @@ import java.util.Random;
 import java.util.HashMap;
 
 public class Canvas extends JPanel implements MouseListener,MouseMotionListener{
-
-  Emitter em;
-  HashMap state;
+  // instance vars
+  Emitter em; // emitter
+  HashMap state; // for keeping track of emitter configs
   boolean mouseClick = false;
 
   public Canvas (){
@@ -26,17 +26,19 @@ public class Canvas extends JPanel implements MouseListener,MouseMotionListener{
     addMouseListener(this);
     addMouseMotionListener(this);
 
+    // init instance vars
     state = new HashMap();
     initState();
-
     em = new Emitter(state);
 
+    // timer for calling paintComponent 24fps
     Timer timer = new Timer(1000/24, new ActionListener(){
         public void actionPerformed(ActionEvent evt){ repaint(); }
     });
     timer.start();
-  }
+  }// end constructor
 
+  // initial settings for the emitter
   public void initState(){
     state.put("speed",5.0);
     state.put("xforce",0.0);
@@ -56,9 +58,9 @@ public class Canvas extends JPanel implements MouseListener,MouseMotionListener{
     // transformation on the entire set
 		g2d.translate(getWidth()/2,getHeight()/2);
 
-    em.emit();
-    em.removeSmallParticles();
-    em.update(g2d);
+    em.emit(); // emit every frame
+    em.removeSmallParticles(); // remove no longer needed particles
+    em.update(g2d); // update particle positions, colors. etc.
 	}
 
   //Methods to satisfy MouseListener interface

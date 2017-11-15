@@ -1,6 +1,6 @@
 
 /**
- * Pythagor.java.
+ * ParticleSystem.java.
  */
 
 import javax.swing.*;
@@ -8,26 +8,26 @@ import java.awt.*;
 
 public class ParticleSystem{
 
-    //For this type of program, event handling determines the path of
-    //execution.  This main method "looks" like it sets up the frame
-    //and then stops.
+    //main method of ParticleSystem program
 
     public static void main(String[] args){
+    // init different window components
     JFrame myFrame = new JFrame();
 		Canvas myCanvas = new Canvas();
-    GUIControls sliders = new GUIControls(myCanvas);
+    GUIControls guiControls = new GUIControls(myCanvas);
+
 		myFrame.setTitle("Particle System");
 		myFrame.setSize(600,600);
 
 		//Sets the window to close when upper right corner clicked.
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//Must use getContentPane() with JFrame.
-    myFrame.add(sliders,BorderLayout.EAST);
+    // add GUIControls and Canvas to the frame
+    myFrame.add(guiControls,BorderLayout.EAST);
 		myFrame.add(myCanvas,BorderLayout.CENTER);
 		myFrame.pack(); //resizes to preferred size for components.
 		myFrame.setResizable(false);
 		myFrame.setVisible(true);
 
-  }
-} // BasicDraw
+  }// end main
+
+} // ParticleSystem

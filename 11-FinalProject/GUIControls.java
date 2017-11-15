@@ -1,6 +1,6 @@
 /**
- * Panel.java
- * Handles GUI controls like sliders
+ * GUIControls.java
+ * Handles GUI controls for changing state
  */
 
  import java.awt.*;
@@ -12,9 +12,9 @@
 class GUIControls extends JPanel implements ChangeListener{
 
   // instance vars
-	JSlider sSlider,ySlider,xSlider,fSlider; // slider for moving light source
-	JLabel rlabel0,rlabel1,rlabel2,rlabel3,rlabel4,rlabel5,rlabel6; // label
-  JButton color1,color2;
+	JSlider sSlider,ySlider,xSlider,fSlider; // slider for changing force, speed, frequency
+	JLabel rlabel0,rlabel1,rlabel2,rlabel3,rlabel4,rlabel5,rlabel6; // labels
+  JButton color1,color2; // buttons for choosing colors
 
 	// current instance of canvas so that
 	// we can tell canvas to update on user input
@@ -25,7 +25,7 @@ class GUIControls extends JPanel implements ChangeListener{
 		myCanvas = _myCanvas;
 		setLayout(new GridLayout(1,3,30,10));
 
-		// initialize slider for changing X value
+		// initialize sliders
     sSlider = new JSlider(JSlider.HORIZONTAL, 0,50,5);
     xSlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
     ySlider = new JSlider(JSlider.HORIZONTAL,-50,50,0);
@@ -45,7 +45,7 @@ class GUIControls extends JPanel implements ChangeListener{
     rlabel5 = new JLabel("Emitter Type:");
     rlabel6 = new JLabel("Preset:");
 
-    // init buttons
+    // init color buttons
     color1 = new JButton("Choose Color1");
     color2 = new JButton("Choose Color2");
     initColorButton(color1,"color1");
@@ -54,9 +54,10 @@ class GUIControls extends JPanel implements ChangeListener{
     // emitter types
     String[] emitterTypesNames = {"Point","Plane"};
     JComboBox emitterTypes = new JComboBox(emitterTypesNames);
-      // add ActionListener to JComboBox
+      // add ActionListener to emitterTypes
       emitterTypes.addActionListener (new ActionListener () {
           public void actionPerformed(ActionEvent e) {
+            // get change and udpdate state
             String chosenEmitter = (String)emitterTypes.getSelectedItem();
             myCanvas.state.put("emtype",chosenEmitter);
           }
@@ -65,9 +66,10 @@ class GUIControls extends JPanel implements ChangeListener{
     // choose preset
     String[] presetTypesName = {"None","Flame", "Snow"};
     JComboBox presetTypes = new JComboBox(presetTypesName);
-      // add ActionListener to JComboBox
+      // add ActionListener to presetTypes
       presetTypes.addActionListener (new ActionListener () {
           public void actionPerformed(ActionEvent e) {
+            // call chosen preset
             String chosenPreset = (String)presetTypes.getSelectedItem();
             if(chosenPreset == "Flame") presetFlame();
             if(chosenPreset == "Snow") presetSnow();
@@ -94,6 +96,7 @@ class GUIControls extends JPanel implements ChangeListener{
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
     slider.addChangeListener(this);
+    // setting custom slider labels
     if(customLables){
       Hashtable sliderLabels = new Hashtable();
       for(int i=-50; i<=50; i+= 25)sliderLabels.put( new Integer(i),
@@ -102,7 +105,7 @@ class GUIControls extends JPanel implements ChangeListener{
     }
   }// end initSlider
 
-	// listen for changes in value of xSlider
+	// listen for changes in slider values
   public void stateChanged(ChangeEvent ev){
     // get slider values
 		double xVal = xSlider.getValue();
@@ -118,14 +121,16 @@ class GUIControls extends JPanel implements ChangeListener{
     myCanvas.state.put("emfr",emfr);
 	}//end stateChanged
 
-  public void initColorButton(JButton button,String label){
+  // for initializing color buttons
+  private void initColorButton(JButton button,String label){
     button.addActionListener(new ButtonListener(button,myCanvas.state,label));
     button.setBackground(Color.white);
     button.setOpaque(true);
     button.setBorderPainted(false);
-  }
+  }// end initColorButton
 
-  public void presetFlame(){
+  // state settings for Flame preset
+  private void presetFlame(){
     myCanvas.state.put("speed",2.0);
     myCanvas.state.put("xforce",0.0);
     myCanvas.state.put("yforce",-0.3);
@@ -135,9 +140,10 @@ class GUIControls extends JPanel implements ChangeListener{
     myCanvas.state.put("emtype","Point");
     myCanvas.state.put("color1",new Color(255,102,51));
     myCanvas.state.put("color2",new Color(255,255,102));
-  }
+  }// end presetFlame
 
-  public void presetSnow(){
+  // state settings for Snow preset
+  private void presetSnow(){
     myCanvas.state.put("speed",6.0);
     myCanvas.state.put("xforce",0.0);
     myCanvas.state.put("yforce",0.6);
@@ -147,7 +153,7 @@ class GUIControls extends JPanel implements ChangeListener{
     myCanvas.state.put("emtype","Plane");
     myCanvas.state.put("color1",Color.white);
     myCanvas.state.put("color2",Color.white);
-  }
+  }// end presetSnow
 
   private class ButtonListener implements ActionListener {
     JButton button;
