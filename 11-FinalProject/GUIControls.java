@@ -155,22 +155,27 @@ class GUIControls extends JPanel implements ChangeListener{
     myCanvas.state.put("color2",Color.white);
   }// end presetSnow
 
+  // small class for custom color buttons ActionListener
   private class ButtonListener implements ActionListener {
+    // instance vars
     JButton button;
     HashMap state;
     String label;
     public ButtonListener(JButton _button,HashMap _state,String _label){
+      // init instance vars
       button = _button;
       state = _state;
       label = _label;
-    }
+    }// end constructor
+
+    // update state and set color button color to chosen color
     public void actionPerformed(ActionEvent e) {
       Color color = JColorChooser.showDialog(null, "Choose a Color", button.getBackground());
       if (color != null){
         button.setBackground(color);
         state.put(label,color);
       }
-    }
-}
+    }// end actionPerformed
+  }// ButtonListener
 
 }// Panel
